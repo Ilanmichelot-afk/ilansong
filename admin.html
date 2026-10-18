@@ -52,6 +52,11 @@ h1{font-size:26px;margin-bottom:4px}.sub{color:var(--mut);margin-bottom:20px}
 .lg{width:120px;height:80px;border-radius:14px;background:#2a2a3a center/contain no-repeat;margin-top:6px}
 #toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-90px);background:#fff;color:#111;padding:10px 18px;border-radius:30px;z-index:60;transition:transform .4s;font-weight:600;font-size:14px}#toast.on{transform:translate(-50%,0)}
 ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
+#gate{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 20% 10%,#ff2d9533,transparent 50%),radial-gradient(circle at 80% 90%,#7a3cff44,transparent 50%),#07070d;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .5s}
+#gate.out{opacity:0;pointer-events:none}
+#gbox{width:100%;max-width:340px;text-align:center;background:#171722;border-radius:24px;padding:28px 24px;box-shadow:0 20px 60px #000a;animation:fu .6s}
+#gbox.shake{animation:shk .4s}
+@keyframes shk{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
 @media(max-width:720px){body{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;padding:10px}aside small,.brand{display:none}.nv{flex:none;padding:10px 12px;font-size:13px}main{padding:16px}}
 </style>
 </head>
@@ -67,17 +72,22 @@ ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
 <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
 <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
 <symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
 </defs></svg>
 <i class="orb"></i>
+<div id="gate"><div id="gbox"><div class="brand" style="padding:0 0 6px;font-size:30px">ILANOVA</div><p class="s" style="margin-bottom:18px;font-size:14px">Espace admin protégé</p><input id="gpw" type="password" placeholder="Mot de passe" autocomplete="current-password"><button class="btn g" id="gbtn" style="width:100%;justify-content:center;margin-top:12px">Entrer</button><div id="gerr" style="color:#ff7088;font-size:13px;margin-top:10px;min-height:18px"></div></div></div>
 <aside>
  <div class="brand">ILANOVA</div><small>Espace admin</small>
  <button class="nv on" data-v="dash"><svg class="ic"><use href="#i-grid"/></svg>Tableau de bord</button>
  <button class="nv" data-v="tit"><svg class="ic"><use href="#i-disc"/></svg>Titres</button>
  <button class="nv" data-v="pl"><svg class="ic"><use href="#i-list"/></svg>Playlists</button>
+ <button class="nv" data-v="news"><svg class="ic"><use href="#i-bell"/></svg>Actualités</button>
  <button class="nv" data-v="set"><svg class="ic"><use href="#i-set"/></svg>Paramètres</button>
  <button class="nv" data-v="pub"><svg class="ic"><use href="#i-dl"/></svg>Publier</button>
- <a class="nv" href="index.html" target="_blank" style="text-decoration:none;margin-top:auto"><svg class="ic"><use href="#i-ext"/></svg>Voir le site</a>
+ <button class="nv" id="lock" style="margin-top:auto"><svg class="ic"><use href="#i-lock"/></svg>Verrouiller</button>
+ <a class="nv" href="index.html" target="_blank" style="text-decoration:none"><svg class="ic"><use href="#i-ext"/></svg>Voir le site</a>
 </aside>
 <main>
  <section class="view on" id="v-dash"></section>
@@ -88,6 +98,7 @@ ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
   <div class="box" id="tl"></div>
  </section>
  <section class="view" id="v-pl"></section>
+ <section class="view" id="v-news"></section>
  <section class="view" id="v-set"></section>
  <section class="view" id="v-pub"></section>
 </main>
@@ -101,13 +112,25 @@ const fmt=s=>{s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padSta
 const mb=n=>(n/1048576).toFixed(1)+' Mo';
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove('on'),2600)}
 
+/* mot de passe (empreinte SHA-256, le mot de passe n’est pas écrit dans le fichier) */
+const PH='c38b4d94e780dbbfc833b33fcbbcd20d3869b9b068f8852f841a9ee5a8292e65',SALT='ilanova-v1';
+async function sha(s){const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(SALT+s));return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const gate=$('#gate');let okS=false;try{okS=sessionStorage.getItem('ilanova_ok')==='1'}catch(e){}
+if(okS)gate.style.display='none';
+async function tryPw(){const e=$('#gerr');
+  if(!window.crypto||!crypto.subtle){e.textContent='Ouvre cette page en https pour te connecter.';return}
+  if(await sha($('#gpw').value)===PH){try{sessionStorage.setItem('ilanova_ok','1')}catch(x){}gate.classList.add('out');setTimeout(()=>{gate.style.display='none'},500)}
+  else{e.textContent='Mot de passe incorrect';const b=$('#gbox');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');$('#gpw').value=''}}
+$('#gbtn').onclick=tryPw;$('#gpw').onkeydown=e=>{if(e.key==='Enter')tryPw()};
+$('#lock').onclick=()=>{try{sessionStorage.removeItem('ilanova_ok')}catch(e){}gate.style.display='flex';void gate.offsetWidth;gate.classList.remove('out');$('#gpw').value='';$('#gerr').textContent=''};
+
 /* stockage (IndexedDB, partagé avec index.html si même site) */
 let _db;const db=()=>_db||(_db=new Promise((res,rej)=>{const r=indexedDB.open('ilanova',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}));
 const get=async k=>{const d=await db();return new Promise(r=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()})};
 const set=async(k,v)=>{const d=await db();return new Promise((r,j)=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=r;t.onerror=()=>j(t.error)})};
 const del=async k=>{const d=await db();return new Promise(r=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').delete(k);t.oncomplete=r})};
 const U={};const url=async k=>U[k]||(await get(k).then(b=>b?(U[k]=URL.createObjectURL(b)):''));
-const DEF={settings:{name:'ILANOVA',tagline:'Ta musique, sans limites.',artist:'Ilan',footer:'Créé avec Claude et Ilan, pour te soutenir dans ton travail de monstre',logoExt:''},tracks:[],playlists:[]};
+const DEF={settings:{name:'ILANOVA',tagline:'Ta musique, sans limites.',artist:'Ilan',footer:'Créé avec Claude et Ilan, pour te soutenir dans ton travail de monstre',logoExt:''},tracks:[],playlists:[],news:[]};
 let lib=JSON.parse(JSON.stringify(DEF));
 const save=()=>set('lib',lib);
 const slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30)||'titre';
@@ -116,7 +139,7 @@ const tById=id=>lib.tracks.find(t=>t.id===id);
 /* navigation */
 function show(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('.nv[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render(v)}
 $$('.nv[data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v));
-const render=v=>({dash:rDash,tit:rTit,pl:rPl,set:rSet,pub:rPub}[v||$('.view.on').id.slice(2)])();
+const render=v=>({dash:rDash,tit:rTit,pl:rPl,news:rNews,set:rSet,pub:rPub}[v||$('.view.on').id.slice(2)])();
 const modal=h=>{$('#sheet').innerHTML=h;$('#modal').classList.add('on')};
 const closeM=()=>$('#modal').classList.remove('on');
 $('#modal').onclick=e=>{if(e.target.id==='modal')closeM()};
@@ -202,6 +225,17 @@ async function rSet(){const s=lib.settings;
     const f=$('#s5').files[0];if(f){await set('logo',f);delete U.logo;s.logoExt=f.name.split('.').pop().toLowerCase()}
     await save();toast('Paramètres enregistrés');rSet()}}
 
+/* actualités */
+function rNews(){
+  const N=(lib.news=lib.news||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+  $('#v-news').innerHTML=`<h1>Actualités</h1><p class="sub">Écris un message pour tes visiteurs (nouveautés, modifications). Il apparaît dans la cloche du site.</p>
+  <div class="box"><label style="margin-top:0">Titre</label><input id="n1" maxlength="60" placeholder="Nouveau son disponible"><label>Message</label><textarea id="n2" rows="4" maxlength="600"></textarea><div class="acts"><button class="btn g" id="nadd">${I('plus')} Ajouter</button></div></div>
+  <div class="box">${N.length?N.map((n,i)=>`<div class="tr" style="--i:${i}"><div class="i"><div class="t">${esc(n.title)}</div><div class="s">${esc(new Date(n.date).toLocaleDateString('fr-FR'))} · ${esc((n.text||'').slice(0,70))}</div></div><button class="ib" data-nd="${n.id}">${I('trash')}</button></div>`).join(''):'<div class="s">Aucune actualité.</div>'}</div>
+  <p class="s" style="margin-top:12px">Pense à générer la publication (onglet Publier) et à renvoyer library.json sur GitHub pour que tes visiteurs la voient.</p>`;
+  $('#nadd').onclick=async()=>{const t=$('#n1').value.trim(),x=$('#n2').value.trim();if(!t&&!x){toast('Écris un titre ou un message');return}
+    lib.news.push({id:'n'+Date.now().toString(36),date:new Date().toISOString(),title:t||'Actualité',text:x});await save();toast('Actualité ajoutée');rNews()};
+  $$('#v-news [data-nd]').forEach(b=>b.onclick=async()=>{if(confirm('Supprimer cette actualité ?')){lib.news=lib.news.filter(n=>n.id!==b.dataset.nd);await save();rNews()}})}
+
 /* publier */
 function rPub(){
   $('#v-pub').innerHTML=`<h1>Publier sur Netlify</h1><p class="sub">Tes changements sont d’abord enregistrés dans ce navigateur (aperçu local sur index.html). Pour les mettre en ligne :</p>
@@ -212,7 +246,7 @@ function rPub(){
 async function publish(){
   if(!window.JSZip){toast('JSZip non chargé : vérifie ta connexion');return}
   const st=$('#pst');st.textContent='Préparation…';
-  const z=new JSZip(),s=lib.settings,L={settings:{name:s.name,tagline:s.tagline,footer:s.footer,logo:''},tracks:[],playlists:[]};
+  const z=new JSZip(),s=lib.settings,L={settings:{name:s.name,tagline:s.tagline,footer:s.footer,logo:''},tracks:[],playlists:[],news:(lib.news||[]).map(n=>({id:n.id,date:n.date,title:n.title,text:n.text}))};
   for(const t of lib.tracks){const a=await get('a:'+t.id);if(!a)continue;const ap=`musiques/${t.id}.${t.audioExt}`;z.file(ap,a);
     let cp='',lp='';if(t.coverExt){const c=await get('c:'+t.id);if(c){cp=`covers/${t.id}.${t.coverExt}`;z.file(cp,c)}}
     if(t.lrcText){lp=`paroles/${t.id}.lrc`;z.file(lp,t.lrcText)}
