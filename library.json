@@ -21,6 +21,30 @@
    "audio": "musiques/megalovania-u0z6.mp3",
    "cover": "covers/megalovania-u0z6.png",
    "lrc": "paroles/megalovania-u0z6.lrc"
+  },
+  {
+   "id": "fille-a-papa-zzrf",
+   "title": "Fille à Papa",
+   "artist": "La rvfleuze - Vacra",
+   "audio": "musiques/fille-a-papa-zzrf.mp3",
+   "cover": "covers/fille-a-papa-zzrf.jpg",
+   "lrc": "paroles/fille-a-papa-zzrf.lrc"
+  },
+  {
+   "id": "tiakola-melo-decale-pp3p",
+   "title": "Mélo Décalé",
+   "artist": "Tiakola",
+   "audio": "musiques/tiakola-melo-decale-pp3p.mp3",
+   "cover": "covers/tiakola-melo-decale-pp3p.jpg",
+   "lrc": "paroles/tiakola-melo-decale-pp3p.lrc"
+  },
+  {
+   "id": "kulturr-meli-melo-clip-officie-1svz",
+   "title": "Méli-Mélo",
+   "artist": "Kulturr",
+   "audio": "musiques/kulturr-meli-melo-clip-officie-1svz.mp3",
+   "cover": "covers/kulturr-meli-melo-clip-officie-1svz.png",
+   "lrc": "paroles/kulturr-meli-melo-clip-officie-1svz.lrc"
   }
  ],
  "playlists": []
