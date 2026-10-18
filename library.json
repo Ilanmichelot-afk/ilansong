@@ -13,6 +13,14 @@
    "audio": "musiques/funk-abnormal-dj-v12-0t4v.mp3",
    "cover": "covers/funk-abnormal-dj-v12-0t4v.jpg",
    "lrc": "paroles/funk-abnormal-dj-v12-0t4v.lrc"
+  },
+  {
+   "id": "megalovania-u0z6",
+   "title": "MEGALOVANIA",
+   "artist": "Toby Fox",
+   "audio": "musiques/megalovania-u0z6.mp3",
+   "cover": "covers/megalovania-u0z6.png",
+   "lrc": "paroles/megalovania-u0z6.lrc"
   }
  ],
  "playlists": []
