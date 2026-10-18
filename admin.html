@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>ILANOVA · Admin</title>
+<style>
+:root{--bg:#0b0b12;--card:#171722;--mut:#9a9ab0;--acc:#ff2d95;--g:linear-gradient(135deg,#ff2d95,#7a3cff)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;display:flex;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;transition:transform .15s,background .2s}
+button:active{transform:scale(.95)}
+input,textarea{font:inherit;color:#fff;background:#232333;border:1px solid #ffffff18;border-radius:12px;padding:11px;width:100%;outline:0}
+input:focus,textarea:focus{border-color:var(--acc)}
+label{display:block;color:var(--mut);font-size:12px;margin:14px 0 5px}
+.ic{width:1.2em;height:1.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fl{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}}
+@keyframes sh{to{background-position:200% 0}}
+aside{width:220px;flex:none;background:#10101a;padding:20px 12px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px;border-right:1px solid #ffffff10}
+.brand{font-weight:900;letter-spacing:3px;font-size:20px;padding:4px 10px 16px;background:linear-gradient(90deg,#ff2d95,#7a3cff,#00c2ff,#ff2d95);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite}
+aside small{color:var(--mut);padding:0 10px;display:block;margin-top:-12px;margin-bottom:12px}
+.nv{display:flex;gap:10px;align-items:center;padding:12px;border-radius:12px;color:var(--mut);text-align:left;font-weight:600}
+.nv:hover{background:#ffffff0d;color:#fff}.nv.on{background:var(--g);color:#fff;box-shadow:0 6px 24px #ff2d9540}
+main{flex:1;padding:24px;max-width:960px;position:relative;overflow:hidden}
+.orb{position:fixed;width:360px;height:360px;border-radius:50%;filter:blur(90px);opacity:.18;background:#7a3cff;right:-100px;top:-80px;animation:fl 10s infinite;pointer-events:none}
+.view{display:none}.view.on{display:block;animation:fu .5s}
+h1{font-size:26px;margin-bottom:4px}.sub{color:var(--mut);margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.st{background:var(--card);border-radius:18px;padding:18px;animation:fu .6s both;animation-delay:calc(var(--i)*80ms);transition:transform .25s}
+.st:hover{transform:translateY(-4px)}
+.st b{display:block;font-size:32px;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}.st span{color:var(--mut);font-size:13px}
+.box{background:var(--card);border-radius:18px;padding:18px;margin-top:14px}
+.btn{background:#fff;color:#111;font-weight:700;padding:11px 20px;border-radius:30px;display:inline-flex;gap:8px;align-items:center}
+.btn.g{background:var(--g);color:#fff}.btn.alt{background:#ffffff1f;color:#fff}.btn.red{background:#ff3b5c;color:#fff}
+.ib{width:36px;height:36px;border-radius:50%;color:var(--mut);display:inline-grid;place-items:center}.ib:hover{background:#ffffff18;color:#fff}
+.drop{border:2px dashed #ffffff30;border-radius:20px;padding:34px 16px;text-align:center;color:var(--mut);transition:.25s;cursor:pointer}
+.drop.ov,.drop:hover{border-color:var(--acc);background:#ff2d9512;color:#fff;transform:scale(1.01)}
+.drop .ic{font-size:34px;margin-bottom:8px;color:var(--acc)}
+.tr{display:flex;align-items:center;gap:12px;padding:10px 6px;border-bottom:1px solid #ffffff0d;animation:fu .4s both;animation-delay:calc(var(--i)*40ms)}
+.th{width:46px;height:46px;border-radius:10px;background:#2a2a3a center/cover;flex:none}
+.tr .i{flex:1;min-width:0}.t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.s{color:var(--mut);font-size:12px}
+.bd{font-size:11px;padding:3px 9px;border-radius:20px;background:#ffffff14;color:var(--mut)}.bd.ok{background:#1fd17d2a;color:#3be58f}.bd.no{background:#ff3b5c2a;color:#ff7088}
+.ring{width:130px;height:130px;flex:none}.ring circle{fill:none;stroke-width:10;stroke-linecap:round}
+.ring .bgc{stroke:#ffffff12}.ring .fg{stroke:url(#rg);stroke-dasharray:264;stroke-dashoffset:264;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1);transform:rotate(-90deg);transform-origin:50% 50%}
+.fx{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+#modal{position:fixed;inset:0;background:#000b;z-index:40;display:none;align-items:center;justify-content:center;padding:16px}#modal.on{display:flex}
+.sheet{background:#1b1b28;width:100%;max-width:560px;border-radius:24px;padding:22px;max-height:90vh;overflow:auto;animation:fu .3s}
+.chk{display:flex;gap:10px;align-items:center;padding:8px 4px;cursor:pointer}.chk input{width:auto}
+.acts{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.lg{width:120px;height:80px;border-radius:14px;background:#2a2a3a center/contain no-repeat;margin-top:6px}
+#toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-90px);background:#fff;color:#111;padding:10px 18px;border-radius:30px;z-index:60;transition:transform .4s;font-weight:600;font-size:14px}#toast.on{transform:translate(-50%,0)}
+ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
+@media(max-width:720px){body{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;padding:10px}aside small,.brand{display:none}.nv{flex:none;padding:10px 12px;font-size:13px}main{padding:16px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff2d95"/><stop offset="1" stop-color="#7a3cff"/></linearGradient>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></symbol>
+<symbol id="i-disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+<symbol id="i-set" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
+</defs></svg>
+<i class="orb"></i>
+<aside>
+ <div class="brand">ILANOVA</div><small>Espace admin</small>
+ <button class="nv on" data-v="dash"><svg class="ic"><use href="#i-grid"/></svg>Tableau de bord</button>
+ <button class="nv" data-v="tit"><svg class="ic"><use href="#i-disc"/></svg>Titres</button>
+ <button class="nv" data-v="pl"><svg class="ic"><use href="#i-list"/></svg>Playlists</button>
+ <button class="nv" data-v="set"><svg class="ic"><use href="#i-set"/></svg>Paramètres</button>
+ <button class="nv" data-v="pub"><svg class="ic"><use href="#i-dl"/></svg>Publier</button>
+ <a class="nv" href="index.html" target="_blank" style="text-decoration:none;margin-top:auto"><svg class="ic"><use href="#i-ext"/></svg>Voir le site</a>
+</aside>
+<main>
+ <section class="view on" id="v-dash"></section>
+ <section class="view" id="v-tit">
+  <h1>Titres</h1><p class="sub">Glisse tes MP3, tes fichiers .lrc et tes pochettes. Ils sont associés par le nom du fichier.</p>
+  <div class="drop" id="drop"><svg class="ic"><use href="#i-up"/></svg><div><b>Glisse tes fichiers ici</b> ou touche pour choisir</div><div class="s" style="margin-top:6px">mon-son.mp3 + mon-son.lrc + mon-son.jpg = un titre complet</div></div>
+  <input type="file" id="fi" multiple accept="audio/*,.lrc,image/*" hidden>
+  <div class="box" id="tl"></div>
+ </section>
+ <section class="view" id="v-pl"></section>
+ <section class="view" id="v-set"></section>
+ <section class="view" id="v-pub"></section>
+</main>
+<div id="modal"><div class="sheet" id="sheet"></div></div><div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const I=n=>`<svg class="ic"><use href="#i-${n}"/></svg>`;
+const fmt=s=>{s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const mb=n=>(n/1048576).toFixed(1)+' Mo';
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove('on'),2600)}
+
+/* stockage (IndexedDB, partagé avec index.html si même site) */
+let _db;const db=()=>_db||(_db=new Promise((res,rej)=>{const r=indexedDB.open('ilanova',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}));
+const get=async k=>{const d=await db();return new Promise(r=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()})};
+const set=async(k,v)=>{const d=await db();return new Promise((r,j)=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=r;t.onerror=()=>j(t.error)})};
+const del=async k=>{const d=await db();return new Promise(r=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').delete(k);t.oncomplete=r})};
+const U={};const url=async k=>U[k]||(await get(k).then(b=>b?(U[k]=URL.createObjectURL(b)):''));
+const DEF={settings:{name:'ILANOVA',tagline:'Ta musique, sans limites.',artist:'Ilan',footer:'Créé avec Claude et Ilan, pour te soutenir dans ton travail de monstre',logoExt:''},tracks:[],playlists:[]};
+let lib=JSON.parse(JSON.stringify(DEF));
+const save=()=>set('lib',lib);
+const slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30)||'titre';
+const tById=id=>lib.tracks.find(t=>t.id===id);
+
+/* navigation */
+function show(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('.nv[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render(v)}
+$$('.nv[data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v));
+const render=v=>({dash:rDash,tit:rTit,pl:rPl,set:rSet,pub:rPub}[v||$('.view.on').id.slice(2)])();
+const modal=h=>{$('#sheet').innerHTML=h;$('#modal').classList.add('on')};
+const closeM=()=>$('#modal').classList.remove('on');
+$('#modal').onclick=e=>{if(e.target.id==='modal')closeM()};
+
+/* tableau de bord */
+function count(el,to){const t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1000);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}
+function rDash(){
+  const T=lib.tracks,dur=T.reduce((a,t)=>a+(t.duration||0),0),size=T.reduce((a,t)=>a+(t.size||0),0);
+  const wl=T.filter(t=>t.lrcText).length,pct=T.length?Math.round(wl/T.length*100):0;
+  const todo=T.filter(t=>!t.lrcText||!t.coverExt);
+  $('#v-dash').innerHTML=`<h1>Bienvenue, ${esc(lib.settings.artist||'Ilan')}</h1><p class="sub">Voilà l’état de ton site.</p>
+  <div class="grid">${[['Titres',T.length,''],['Minutes de musique',Math.round(dur/60),''],['Playlists officielles',lib.playlists.length,''],['Poids total',0,mb(size)]].map((s,i)=>`<div class="st" style="--i:${i}"><b data-n="${s[1]}">${s[2]||0}</b><span>${s[0]}</span></div>`).join('')}</div>
+  <div class="box fx"><svg class="ring" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="42"/><circle class="fg" id="rf" cx="50" cy="50" r="42"/></svg>
+  <div><h2 style="font-size:20px">${pct}% avec paroles</h2><p class="s" style="margin:6px 0 14px">${wl} titre(s) sur ${T.length} ont un fichier .lrc</p><button class="btn g" data-go="tit">${I('up')} Ajouter des titres</button></div></div>
+  <div class="box"><h2 style="font-size:17px;margin-bottom:8px">À compléter</h2>${todo.length?todo.map(t=>`<div class="tr"><div class="i"><div class="t">${esc(t.title)}</div></div>${t.lrcText?'':'<span class="bd no">sans paroles</span>'}${t.coverExt?'':'<span class="bd no">sans pochette</span>'}<button class="ib" data-ed="${t.id}">${I('edit')}</button></div>`).join(''):'<div class="s">Tout est complet.</div>'}</div>`;
+  $$('#v-dash [data-n]').forEach(e=>{if(+e.dataset.n)count(e,+e.dataset.n)});$$('#v-dash b').forEach(b=>{if(!b.dataset.n||b.dataset.n==='0')b.textContent=b.textContent||'0'});
+  const sz=$$('#v-dash b')[3];sz.textContent=mb(size);
+  setTimeout(()=>{const r=$('#rf');if(r)r.style.strokeDashoffset=264*(1-pct/100)},80)}
+
+/* titres */
+async function rTit(){
+  const T=lib.tracks;$('#tl').innerHTML=T.length?T.map((t,i)=>`<div class="tr" style="--i:${i}"><div class="th" data-c="${t.coverExt?t.id:''}"></div><div class="i"><div class="t">${esc(t.title)}</div><div class="s">${esc(t.artist)} · ${fmt(t.duration)} · ${mb(t.size||0)}</div></div><span class="bd ${t.lrcText?'ok':'no'}">${t.lrcText?'paroles':'sans paroles'}</span><button class="ib" data-ed="${t.id}">${I('edit')}</button><button class="ib" data-del="${t.id}">${I('trash')}</button></div>`).join(''):'<div class="s" style="padding:10px">Aucun titre pour l’instant.</div>';
+  for(const e of $$('#tl .th[data-c]')){if(e.dataset.c)e.style.backgroundImage=`url('${await url('c:'+e.dataset.c)}')`}}
+const dur=blob=>new Promise(res=>{const a=new Audio(),u=URL.createObjectURL(blob);a.preload='metadata';a.onloadedmetadata=()=>{res(a.duration);URL.revokeObjectURL(u)};a.onerror=()=>res(0);setTimeout(()=>res(0),5000);a.src=u});
+async function ingest(files){
+  const g={};
+  for(const f of files){const m=f.name.match(/^(.*)\.([^.]+)$/);if(!m)continue;const key=m[1].trim().toLowerCase(),e=m[2].toLowerCase();
+    const k=/^(mp3|m4a|wav|ogg|aac|flac)$/.test(e)?'audio':e==='lrc'?'lrc':/^(jpe?g|png|webp|gif)$/.test(e)?'cover':null;if(!k)continue;
+    (g[key]=g[key]||{name:m[1].trim()})[k]=f;g[key][k+'Ext']=e}
+  let n=0,skip=0;
+  for(const key in g){const o=g[key];
+    let t=lib.tracks.find(x=>x.key===key);
+    if(!t){if(!o.audio){skip++;continue}
+      t={id:slug(o.name)+'-'+Math.random().toString(36).slice(2,6),key,title:o.name.replace(/[_]+/g,' ').replace(/\s+/g,' ').trim(),artist:lib.settings.artist||'',audioExt:'',coverExt:'',lrcText:'',duration:0,size:0};lib.tracks.push(t)}
+    if(o.audio){await set('a:'+t.id,o.audio);delete U['a:'+t.id];t.audioExt=o.audioExt;t.size=o.audio.size;t.duration=await dur(o.audio)}
+    if(o.lrc)t.lrcText=await o.lrc.text();
+    if(o.cover){await set('c:'+t.id,o.cover);delete U['c:'+t.id];t.coverExt=o.coverExt}
+    n++}
+  await save();toast(n?`${n} titre(s) mis à jour`:'Aucun fichier utilisable');if(skip)toast(`${skip} fichier(s) ignoré(s) : pas de MP3 correspondant`);render()}
+const drop=$('#drop'),fi=$('#fi');
+drop.onclick=()=>fi.click();fi.onchange=()=>{ingest([...fi.files]);fi.value=''};
+['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('ov')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('ov')}));
+drop.addEventListener('drop',ev=>ingest([...ev.dataTransfer.files]));
+function editTrack(id){const t=tById(id);
+  modal(`<h2>Modifier le titre</h2><label>Titre</label><input id="e1" value="${esc(t.title)}"><label>Artiste</label><input id="e2" value="${esc(t.artist)}">
+  <label>Paroles (format .lrc)</label><textarea id="e3" rows="7" placeholder="[00:12.00] Première ligne">${esc(t.lrcText)}</textarea><div style="margin-top:6px"><input type="file" id="e4" accept=".lrc,text/plain" hidden><button class="btn alt" id="e4b">${I('up')} Remplacer par un .lrc</button></div>
+  <label>Pochette</label><input type="file" id="e5" accept="image/*"><label>Remplacer le MP3</label><input type="file" id="e6" accept="audio/*">
+  <div class="acts"><button class="btn alt" id="ec">Annuler</button><button class="btn g" id="es">Enregistrer</button></div>`);
+  $('#e4b').onclick=()=>$('#e4').click();$('#e4').onchange=async e=>{if(e.target.files[0])$('#e3').value=await e.target.files[0].text()};$('#ec').onclick=closeM;
+  $('#es').onclick=async()=>{t.title=$('#e1').value.trim()||t.title;t.artist=$('#e2').value.trim();t.lrcText=$('#e3').value;
+    const c=$('#e5').files[0];if(c){await set('c:'+t.id,c);delete U['c:'+t.id];t.coverExt=c.name.split('.').pop().toLowerCase()}
+    const a=$('#e6').files[0];if(a){await set('a:'+t.id,a);delete U['a:'+t.id];t.audioExt=a.name.split('.').pop().toLowerCase();t.size=a.size;t.duration=await dur(a)}
+    await save();closeM();toast('Titre enregistré');render()}}
+async function delTrack(id){const t=tById(id);if(!confirm('Supprimer « '+t.title+' » ?'))return;
+  lib.tracks=lib.tracks.filter(x=>x.id!==id);lib.playlists.forEach(p=>p.ids=p.ids.filter(x=>x!==id));
+  await del('a:'+id);await del('c:'+id);await save();toast('Titre supprimé');render()}
+
+/* playlists officielles */
+async function rPl(){
+  $('#v-pl').innerHTML=`<h1>Playlists officielles</h1><p class="sub">Visibles par tous les visiteurs sur ton site.</p><button class="btn g" id="np">${I('plus')} Nouvelle playlist</button><div class="box" id="pll"></div>`;
+  $('#np').onclick=()=>editPl();
+  $('#pll').innerHTML=lib.playlists.length?lib.playlists.map((p,i)=>`<div class="tr" style="--i:${i}"><div class="th" data-p="${p.coverExt?p.id:''}"></div><div class="i"><div class="t">${esc(p.name)}</div><div class="s">${p.ids.length} titre(s)</div></div><button class="ib" data-pe="${p.id}">${I('edit')}</button><button class="ib" data-pd="${p.id}">${I('trash')}</button></div>`).join(''):'<div class="s">Aucune playlist.</div>';
+  for(const e of $$('#pll .th[data-p]'))if(e.dataset.p)e.style.backgroundImage=`url('${await url('p:'+e.dataset.p)}')`}
+function editPl(id){const p=id?lib.playlists.find(x=>x.id===id):{id:'p'+Date.now().toString(36),name:'',desc:'',ids:[],coverExt:''};
+  modal(`<h2>${id?'Modifier':'Nouvelle'} playlist</h2><label>Nom</label><input id="p1" value="${esc(p.name)}"><label>Description</label><input id="p2" value="${esc(p.desc)}"><label>Pochette</label><input type="file" id="p3" accept="image/*">
+  <label>Titres</label>${lib.tracks.map(t=>`<label class="chk" style="margin:0;color:#fff;font-size:15px"><input type="checkbox" value="${t.id}" ${p.ids.includes(t.id)?'checked':''}> ${esc(t.title)}</label>`).join('')||'<div class="s">Ajoute d’abord des titres.</div>'}
+  <div class="acts"><button class="btn alt" id="pc">Annuler</button><button class="btn g" id="ps">Enregistrer</button></div>`);
+  $('#pc').onclick=closeM;
+  $('#ps').onclick=async()=>{p.name=$('#p1').value.trim()||'Playlist';p.desc=$('#p2').value.trim();p.ids=$$('#sheet input[type=checkbox]:checked').map(c=>c.value);
+    const c=$('#p3').files[0];if(c){await set('p:'+p.id,c);delete U['p:'+p.id];p.coverExt=c.name.split('.').pop().toLowerCase()}
+    if(!id)lib.playlists.push(p);await save();closeM();toast('Playlist enregistrée');rPl()}}
+
+/* paramètres */
+async function rSet(){const s=lib.settings;
+  $('#v-set').innerHTML=`<h1>Paramètres</h1><p class="sub">Le nom, ton logo et le texte de bas de page.</p><div class="box">
+  <label>Nom du site</label><input id="s1" value="${esc(s.name)}"><label>Slogan (écran d’accueil)</label><input id="s2" value="${esc(s.tagline)}">
+  <label>Nom d’artiste par défaut</label><input id="s3" value="${esc(s.artist)}"><label>Texte de bas de page</label><input id="s4" value="${esc(s.footer)}">
+  <label>Ton logo (PNG, SVG, JPG)</label><input type="file" id="s5" accept="image/*"><div class="lg" id="lg"></div>
+  <div class="acts"><button class="btn g" id="ss">Enregistrer</button></div></div>`;
+  if(s.logoExt)$('#lg').style.backgroundImage=`url('${await url('logo')}')`;
+  $('#ss').onclick=async()=>{s.name=$('#s1').value.trim()||'ILANOVA';s.tagline=$('#s2').value;s.artist=$('#s3').value;s.footer=$('#s4').value;
+    const f=$('#s5').files[0];if(f){await set('logo',f);delete U.logo;s.logoExt=f.name.split('.').pop().toLowerCase()}
+    await save();toast('Paramètres enregistrés');rSet()}}
+
+/* publier */
+function rPub(){
+  $('#v-pub').innerHTML=`<h1>Publier sur Netlify</h1><p class="sub">Tes changements sont d’abord enregistrés dans ce navigateur (aperçu local sur index.html). Pour les mettre en ligne :</p>
+  <div class="box"><ol><li>Clique sur le bouton ci-dessous : un fichier <b>ilanova-publication.zip</b> est téléchargé.</li><li>Dézippe-le : tu obtiens <b>library.json</b> et les dossiers <b>musiques</b>, <b>paroles</b>, <b>covers</b>.</li><li>Mets-les dans le même dossier que <b>index.html</b> et <b>admin.html</b>.</li><li>Glisse ce dossier sur <b>app.netlify.com/drop</b> (ou sur ton site, onglet Deploys).</li></ol>
+  <div style="margin-top:16px"><button class="btn g" id="pb">${I('dl')} Générer la publication (${lib.tracks.length} titres)</button></div><div class="s" id="pst" style="margin-top:10px"></div></div>
+  <div class="box"><b>Bon à savoir</b><p class="s" style="margin-top:6px;line-height:1.6">Les visiteurs voient seulement ce que tu as publié. Modifier admin.html chez quelqu’un d’autre ne change rien pour les autres, car tout est enregistré dans son propre navigateur.</p></div>`;
+  $('#pb').onclick=publish}
+async function publish(){
+  if(!window.JSZip){toast('JSZip non chargé : vérifie ta connexion');return}
+  const st=$('#pst');st.textContent='Préparation…';
+  const z=new JSZip(),s=lib.settings,L={settings:{name:s.name,tagline:s.tagline,footer:s.footer,logo:''},tracks:[],playlists:[]};
+  for(const t of lib.tracks){const a=await get('a:'+t.id);if(!a)continue;const ap=`musiques/${t.id}.${t.audioExt}`;z.file(ap,a);
+    let cp='',lp='';if(t.coverExt){const c=await get('c:'+t.id);if(c){cp=`covers/${t.id}.${t.coverExt}`;z.file(cp,c)}}
+    if(t.lrcText){lp=`paroles/${t.id}.lrc`;z.file(lp,t.lrcText)}
+    L.tracks.push({id:t.id,title:t.title,artist:t.artist,audio:ap,cover:cp,lrc:lp})}
+  for(const p of lib.playlists){let cp='';if(p.coverExt){const c=await get('p:'+p.id);if(c){cp=`covers/pl-${p.id}.${p.coverExt}`;z.file(cp,c)}}
+    L.playlists.push({id:p.id,name:p.name,desc:p.desc,ids:p.ids,cover:cp})}
+  if(s.logoExt){const b=await get('logo');if(b){L.settings.logo='logo.'+s.logoExt;z.file(L.settings.logo,b)}}
+  z.file('library.json',JSON.stringify(L,null,1));
+  const blob=await z.generateAsync({type:'blob',compression:'STORE'},m=>{st.textContent='Création du zip… '+Math.round(m.percent)+'%'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ilanova-publication.zip';a.click();st.textContent='Terminé. Dézippe puis glisse le dossier sur Netlify.';toast('Publication prête')}
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go],[data-ed],[data-del],[data-pe],[data-pd]');if(!b)return;
+  if(b.dataset.go)show(b.dataset.go);else if(b.dataset.ed)editTrack(b.dataset.ed);else if(b.dataset.del)delTrack(b.dataset.del);
+  else if(b.dataset.pe)editPl(b.dataset.pe);else if(b.dataset.pd&&confirm('Supprimer cette playlist ?')){lib.playlists=lib.playlists.filter(p=>p.id!==b.dataset.pd);save().then(rPl)}});
+(async()=>{try{const l=await get('lib');if(l)lib={...DEF,...l,settings:{...DEF.settings,...l.settings}}}catch(e){toast('Stockage du navigateur indisponible')}rDash()})();
+</script>
+</body>
+</html>
