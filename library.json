@@ -1,0 +1,19 @@
+{
+ "settings": {
+  "name": "ILANOVA",
+  "tagline": "Ta musique, sans limites.",
+  "footer": "Créé avec Claude et Ilan, pour te soutenir dans ton travail de monstre",
+  "logo": ""
+ },
+ "tracks": [
+  {
+   "id": "funk-abnormal-dj-v12-0t4v",
+   "title": "FUNK ABNORMAL",
+   "artist": "DJ V12",
+   "audio": "musiques/funk-abnormal-dj-v12-0t4v.mp3",
+   "cover": "covers/funk-abnormal-dj-v12-0t4v.jpg",
+   "lrc": "paroles/funk-abnormal-dj-v12-0t4v.lrc"
+  }
+ ],
+ "playlists": []
+}
