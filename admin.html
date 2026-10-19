@@ -52,6 +52,15 @@ h1{font-size:26px;margin-bottom:4px}.sub{color:var(--mut);margin-bottom:20px}
 .lg{width:120px;height:80px;border-radius:14px;background:#2a2a3a center/contain no-repeat;margin-top:6px}
 #toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-90px);background:#fff;color:#111;padding:10px 18px;border-radius:30px;z-index:60;transition:transform .4s;font-weight:600;font-size:14px}#toast.on{transform:translate(-50%,0)}
 ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
+select{font:inherit;color:#fff;background:#232333;border:1px solid #ffffff18;border-radius:12px;padding:11px;width:100%;outline:0}
+input[type=range]{padding:0;background:none;border:0;accent-color:#ff2d95}
+.btn.sel{background:var(--g)!important;color:#fff!important}
+#syl{position:relative;max-height:46vh;overflow:auto;background:#10101a;border-radius:14px;padding:12px;scrollbar-width:thin}
+.sy-line{padding:6px 4px;font-size:21px;font-weight:800;line-height:1.35}
+.sy-w{color:#ffffff4d;cursor:pointer;padding:0 2px;border-radius:5px;transition:color .12s}
+.sy-w.done{color:#fff}.sy-w.next{color:#ff2d95;text-decoration:underline;text-underline-offset:5px}
+.tapb{width:100%;height:110px;border-radius:20px;font-size:26px;font-weight:900;letter-spacing:3px;background:var(--g);color:#fff;margin-top:12px;user-select:none;-webkit-user-select:none;touch-action:manipulation;box-shadow:0 10px 30px #ff2d9540}
+.tapb:active{transform:scale(.97)}
 #gate{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 20% 10%,#ff2d9533,transparent 50%),radial-gradient(circle at 80% 90%,#7a3cff44,transparent 50%),#07070d;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .5s}
 #gate.out{opacity:0;pointer-events:none}
 #gbox{width:100%;max-width:340px;text-align:center;background:#171722;border-radius:24px;padding:28px 24px;box-shadow:0 20px 60px #000a;animation:fu .6s}
@@ -72,6 +81,7 @@ ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
 <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
 <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-sync" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
 <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
 <symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
@@ -83,6 +93,7 @@ ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
  <button class="nv on" data-v="dash"><svg class="ic"><use href="#i-grid"/></svg>Tableau de bord</button>
  <button class="nv" data-v="tit"><svg class="ic"><use href="#i-disc"/></svg>Titres</button>
  <button class="nv" data-v="pl"><svg class="ic"><use href="#i-list"/></svg>Playlists</button>
+ <button class="nv" data-v="sync"><svg class="ic"><use href="#i-sync"/></svg>Synchroniser</button>
  <button class="nv" data-v="news"><svg class="ic"><use href="#i-bell"/></svg>Actualités</button>
  <button class="nv" data-v="set"><svg class="ic"><use href="#i-set"/></svg>Paramètres</button>
  <button class="nv" data-v="pub"><svg class="ic"><use href="#i-dl"/></svg>Publier</button>
@@ -98,6 +109,7 @@ ol{padding-left:20px;line-height:1.9;color:#d5d5e5}
   <div class="box" id="tl"></div>
  </section>
  <section class="view" id="v-pl"></section>
+ <section class="view" id="v-sync"></section>
  <section class="view" id="v-news"></section>
  <section class="view" id="v-set"></section>
  <section class="view" id="v-pub"></section>
@@ -137,9 +149,9 @@ const slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').re
 const tById=id=>lib.tracks.find(t=>t.id===id);
 
 /* navigation */
-function show(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('.nv[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render(v)}
+function show(v){if(window.syStop&&v!=='sync')syStop();$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('.nv[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render(v)}
 $$('.nv[data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v));
-const render=v=>({dash:rDash,tit:rTit,pl:rPl,news:rNews,set:rSet,pub:rPub}[v||$('.view.on').id.slice(2)])();
+const render=v=>({dash:rDash,tit:rTit,pl:rPl,news:rNews,sync:rSync,set:rSet,pub:rPub}[v||$('.view.on').id.slice(2)])();
 const modal=h=>{$('#sheet').innerHTML=h;$('#modal').classList.add('on')};
 const closeM=()=>$('#modal').classList.remove('on');
 $('#modal').onclick=e=>{if(e.target.id==='modal')closeM()};
@@ -224,6 +236,93 @@ async function rSet(){const s=lib.settings;
   $('#ss').onclick=async()=>{s.name=$('#s1').value.trim()||'ILANOVA';s.tagline=$('#s2').value;s.artist=$('#s3').value;s.footer=$('#s4').value;
     const f=$('#s5').files[0];if(f){await set('logo',f);delete U.logo;s.logoExt=f.name.split('.').pop().toLowerCase()}
     await save();toast('Paramètres enregistrés');rSet()}}
+
+/* synchronisation des paroles */
+const sy0={mode:'word'};let sy=null,syKeys=false;
+const ts=t=>{const m=Math.floor(t/60),s=t-m*60;return String(m).padStart(2,'0')+':'+s.toFixed(2).padStart(5,'0')};
+const plainL=x=>(x||'').split('\n').map(l=>l.replace(/\[[^\]]*\]/g,'').replace(/<[^>]*>/g,'').trim()).filter(Boolean).join('\n');
+function syStop(){if(sy&&sy.au)sy.au.pause()}
+function rSync(){
+  const T=lib.tracks;
+  if(!T.length){$('#v-sync').innerHTML='<h1>Synchroniser les paroles</h1><div class="box"><div class="s">Ajoute d’abord un titre avec son MP3 (onglet Titres).</div></div>';return}
+  $('#v-sync').innerHTML=`<h1>Synchroniser les paroles</h1><p class="sub">Écoute le son et appuie sur le gros bouton (ou sur Espace) au début de chaque mot. Le fichier .lrc se crée tout seul.</p>
+  <div class="box"><label style="margin-top:0">Titre</label><select id="sy-t">${T.map(t=>`<option value="${t.id}">${esc(t.title)} · ${esc(t.artist)}</option>`).join('')}</select>
+  <label>Paroles (une ligne par ligne chantée)</label><textarea id="sy-l" rows="8" placeholder="Colle ici les paroles"></textarea>
+  <label>Précision</label><div class="fx" id="sy-md"><button class="btn alt ${sy0.mode==='word'?'sel':''}" data-m="word">Mot par mot</button><button class="btn alt ${sy0.mode==='line'?'sel':''}" data-m="line">Ligne par ligne</button></div>
+  <div class="acts"><button class="btn g" id="sy-go">Commencer</button></div></div>
+  <div class="box" id="sy-stage" style="display:none"></div>`;
+  const sel=$('#sy-t'),ta=$('#sy-l');const fill=()=>{ta.value=plainL(tById(sel.value).lrcText)};
+  sel.onchange=fill;fill();
+  $$('#sy-md button').forEach(b=>b.onclick=()=>{sy0.mode=b.dataset.m;$$('#sy-md button').forEach(x=>x.classList.toggle('sel',x===b))});
+  $('#sy-go').onclick=syStart;
+  if(!syKeys){syKeys=true;document.addEventListener('keydown',e=>{
+    if(e.code!=='Space'||!sy||!$('#v-sync').classList.contains('on'))return;
+    if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)&&document.activeElement.type!=='range')return;
+    e.preventDefault();if(e.repeat)return;if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();syTap()})}}
+async function syStart(){
+  const id=$('#sy-t').value,t=tById(id),blob=await get('a:'+id);
+  if(!blob){toast('MP3 introuvable pour ce titre');return}
+  const lines=$('#sy-l').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  if(!lines.length){toast('Colle d’abord les paroles');return}
+  syStop();
+  const au=new Audio(await url('a:'+id));au.preservesPitch=true;
+  const items=[];lines.forEach((ln,li)=>{if(sy0.mode==='word')ln.split(/\s+/).forEach(x=>items.push({li,x,t:null}));else items.push({li,x:ln,t:null})});
+  sy={id,t,lines,items,mode:sy0.mode,ni:0,tap:true,lat:.12,au,loop:false,lastK:-2,drag:false};
+  const st=$('#sy-stage');st.style.display='block';
+  st.innerHTML=`<div class="fx" style="justify-content:space-between"><div class="fx"><button class="btn alt" id="sy-pp">Lecture</button><span class="s" id="sy-time">0:00 / 0:00</span></div>
+  <div class="fx"><button class="btn alt sel" id="sy-mt">Taper</button><button class="btn alt" id="sy-mp">Aperçu</button></div></div>
+  <input type="range" id="sy-seek" min="0" max="1000" value="0" style="width:100%;margin:10px 0">
+  <div id="syl"></div>
+  <button class="tapb" id="sy-tap">${sy.mode==='word'?'TAP · mot suivant':'TAP · ligne suivante'}</button>
+  <div class="fx" style="margin-top:12px"><span class="s">Vitesse</span><button class="btn alt sel" data-r="1">1×</button><button class="btn alt" data-r=".85">0,85×</button><button class="btn alt" data-r=".7">0,7×</button></div>
+  <label>Compensation du temps de réaction : <b id="sy-lv">0,12</b> s (monte si tes mots sont en retard)</label><input type="range" id="sy-lat" min="0" max="0.4" step="0.01" value="0.12" style="width:100%">
+  <div class="fx" style="margin-top:14px"><button class="btn alt" id="sy-undo">Annuler le dernier</button><button class="btn alt" id="sy-reset">Tout effacer</button><button class="btn alt" id="sy-dl">Télécharger .lrc</button><button class="btn g" id="sy-save">Enregistrer dans le titre</button></div>
+  <p class="s" style="margin-top:10px;line-height:1.5">Astuce : clique sur un mot pour reprendre à cet endroit. En mode Aperçu, clique sur un mot pour écouter ce passage.</p>`;
+  let h='';lines.forEach((ln,li)=>{h+=`<div class="sy-line">`+items.map((x,i)=>x.li===li?`<span class="sy-w" data-i="${i}">${esc(x.x)}</span>`:'').filter(Boolean).join(' ')+'</div>'});
+  const box=$('#syl');box.innerHTML=h;sy.sp=[...box.querySelectorAll('.sy-w')];
+  au.onplay=au.onpause=()=>{$('#sy-pp').textContent=au.paused?'Lecture':'Pause';if(!au.paused)syLoop()};
+  au.onloadedmetadata=()=>syTick();
+  $('#sy-pp').onclick=()=>{au.paused?au.play():au.pause()};
+  $('#sy-tap').onpointerdown=e=>{e.preventDefault();syTap()};
+  $('#sy-mt').onclick=()=>syTapMode(true);$('#sy-mp').onclick=()=>syTapMode(false);
+  $$('#sy-stage [data-r]').forEach(b=>b.onclick=()=>{au.playbackRate=+b.dataset.r;$$('#sy-stage [data-r]').forEach(x=>x.classList.toggle('sel',x===b))});
+  $('#sy-lat').oninput=e=>{sy.lat=+e.target.value;$('#sy-lv').textContent=String(sy.lat.toFixed(2)).replace('.',',')};
+  const sk=$('#sy-seek');sk.oninput=()=>{sy.drag=true;if(au.duration)au.currentTime=sk.value/1000*au.duration;syTick()};sk.onchange=()=>{sy.drag=false};
+  box.onclick=e=>{const w=e.target.closest('.sy-w');if(!w)return;const i=+w.dataset.i;
+    if(sy.tap){sy.items.forEach((x,k)=>{if(k>=i)x.t=null});sy.ni=i;const p=sy.items[i-1];au.currentTime=Math.max(0,(p&&p.t!=null?p.t:0)-1);toast('Reprise à partir de ce mot')}
+    else au.currentTime=Math.max(0,(sy.items[i].t||0)-.4);
+    syTick()};
+  $('#sy-undo').onclick=()=>{if(sy.ni>0){sy.ni--;const t0=sy.items[sy.ni].t;sy.items[sy.ni].t=null;au.currentTime=Math.max(0,(t0==null?au.currentTime:t0)-1.5);syTick()}};
+  $('#sy-reset').onclick=()=>{if(confirm('Effacer toute la synchronisation ?')){sy.items.forEach(x=>x.t=null);sy.ni=0;au.currentTime=0;syTick()}};
+  $('#sy-save').onclick=sySave;$('#sy-dl').onclick=syDl;
+  syTick();toast('Appuie sur Lecture puis tape à chaque mot');
+}
+function syTapMode(v){sy.tap=v;$('#sy-mt').classList.toggle('sel',v);$('#sy-mp').classList.toggle('sel',!v);$('#sy-tap').style.opacity=v?1:.35;syTick()}
+function syTap(){
+  if(!sy||!sy.tap||sy.ni>=sy.items.length||sy.au.paused)return;
+  let t=Math.max(0,sy.au.currentTime-sy.lat);const p=sy.items[sy.ni-1];if(p&&p.t!=null&&t<=p.t)t=p.t+.02;
+  sy.items[sy.ni].t=t;sy.ni++;
+  if(sy.ni>=sy.items.length)toast('Terminé ! Passe en Aperçu pour vérifier, puis enregistre.');
+  syTick()}
+function syLoop(){if(sy.loop)return;sy.loop=true;(function f(){syTick();if(sy&&!sy.au.paused)requestAnimationFrame(f);else if(sy)sy.loop=false})()}
+function syTick(){
+  if(!sy)return;const c=sy.au.currentTime;let last=-1;
+  sy.items.forEach((x,i)=>{const d=x.t!=null&&x.t<=c;const e=sy.sp[i];e.classList.toggle('done',d);e.classList.toggle('next',sy.tap&&i===sy.ni);if(d)last=i});
+  const k=sy.tap?Math.max(sy.ni-1,0):Math.max(last,0),sp=sy.sp[k];
+  if(sp&&k!==sy.lastK){sy.lastK=k;const b=$('#syl');b.scrollTo({top:sp.parentElement.offsetTop-b.clientHeight/3,behavior:'smooth'})}
+  $('#sy-time').textContent=fmt(c)+' / '+fmt(sy.au.duration||0);
+  if(!sy.drag&&sy.au.duration)$('#sy-seek').value=c/sy.au.duration*1000}
+function toLRC(){
+  const L=sy.lines.map((ln,li)=>{const it=sy.items.filter(x=>x.li===li);if(!it.length||it.some(x=>x.t==null))return null;
+    return sy.mode==='word'?'['+ts(it[0].t)+'] '+it.map(w=>'<'+ts(w.t)+'>'+w.x).join(' '):'['+ts(it[0].t)+'] '+it[0].x});
+  return L.filter(Boolean).join('\n')}
+async function sySave(){
+  const out=toLRC(),n=sy.items.filter(x=>x.t==null).length;
+  if(!out){toast('Rien à enregistrer : synchronise au moins une ligne');return}
+  if(n&&!confirm(n+' mot(s) pas encore synchronisé(s) : les lignes incomplètes seront ignorées. Continuer ?'))return;
+  sy.t.lrcText=out;await save();toast('Paroles enregistrées dans « '+sy.t.title+' »')}
+function syDl(){const out=toLRC();if(!out){toast('Rien à télécharger');return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/plain'}));a.download=slug(sy.t.title)+'.lrc';a.click()}
 
 /* actualités */
 function rNews(){
