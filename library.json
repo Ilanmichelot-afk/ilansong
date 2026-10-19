@@ -45,6 +45,62 @@
    "audio": "musiques/kulturr-meli-melo-clip-officie-1svz.mp3",
    "cover": "covers/kulturr-meli-melo-clip-officie-1svz.png",
    "lrc": "paroles/kulturr-meli-melo-clip-officie-1svz.lrc"
+  },
+  {
+   "id": "parlu-u67o",
+   "title": "PARLU",
+   "artist": "La Rvfleuze",
+   "audio": "musiques/parlu-u67o.mp3",
+   "cover": "covers/parlu-u67o.jpg",
+   "lrc": "paroles/parlu-u67o.lrc"
+  },
+  {
+   "id": "na-za-desole-uvyh",
+   "title": "Na Za Désolé",
+   "artist": "Black Cat",
+   "audio": "musiques/na-za-desole-uvyh.mp3",
+   "cover": "covers/na-za-desole-uvyh.jpg",
+   "lrc": "paroles/na-za-desole-uvyh.lrc"
+  },
+  {
+   "id": "mauvais-djo-maladie-cheveux-bl-69vi",
+   "title": "Maladie",
+   "artist": "Mauvais djo",
+   "audio": "musiques/mauvais-djo-maladie-cheveux-bl-69vi.mp3",
+   "cover": "covers/mauvais-djo-maladie-cheveux-bl-69vi.jpg",
+   "lrc": "paroles/mauvais-djo-maladie-cheveux-bl-69vi.lrc"
+  },
+  {
+   "id": "triangle-des-bermudes-ft-l2b-a-phb7",
+   "title": "A l'Aise",
+   "artist": "Triangle des bermudes - L2B",
+   "audio": "musiques/triangle-des-bermudes-ft-l2b-a-phb7.mp3",
+   "cover": "covers/triangle-des-bermudes-ft-l2b-a-phb7.jpg",
+   "lrc": "paroles/triangle-des-bermudes-ft-l2b-a-phb7.lrc"
+  },
+  {
+   "id": "marwa-loud-ft-tk13002-fendi-ga-invm",
+   "title": "Fendi Gang",
+   "artist": "TK - Marwa Loud",
+   "audio": "musiques/marwa-loud-ft-tk13002-fendi-ga-invm.mp3",
+   "cover": "covers/marwa-loud-ft-tk13002-fendi-ga-invm.jpg",
+   "lrc": "paroles/marwa-loud-ft-tk13002-fendi-ga-invm.lrc"
+  },
+  {
+   "id": "la-rvfleuze-argent-sale-a-colo-jjo3",
+   "title": "Argent Sale",
+   "artist": "La Rvfleuze",
+   "audio": "musiques/la-rvfleuze-argent-sale-a-colo-jjo3.mp3",
+   "cover": "covers/la-rvfleuze-argent-sale-a-colo-jjo3.jpg",
+   "lrc": "paroles/la-rvfleuze-argent-sale-a-colo-jjo3.lrc"
+  },
+  {
+   "id": "jul-parfum-quartier-album-grat-jzy5",
+   "title": "Parfum quartier",
+   "artist": "JUL",
+   "audio": "musiques/jul-parfum-quartier-album-grat-jzy5.mp3",
+   "cover": "covers/jul-parfum-quartier-album-grat-jzy5.jpg",
+   "lrc": "paroles/jul-parfum-quartier-album-grat-jzy5.lrc"
   }
  ],
  "playlists": [],
