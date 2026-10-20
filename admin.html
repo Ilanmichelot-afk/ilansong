@@ -335,13 +335,49 @@ function rNews(){
     lib.news.push({id:'n'+Date.now().toString(36),date:new Date().toISOString(),title:t||'Actualité',text:x});await save();toast('Actualité ajoutée');rNews()};
   $$('#v-news [data-nd]').forEach(b=>b.onclick=async()=>{if(confirm('Supprimer cette actualité ?')){lib.news=lib.news.filter(n=>n.id!==b.dataset.nd);await save();rNews()}})}
 
+/* import depuis un autre site ILANOVA ou un zip */
+const MIME={mp3:'audio/mpeg',m4a:'audio/mp4',aac:'audio/aac',wav:'audio/wav',ogg:'audio/ogg',flac:'audio/flac',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif',svg:'image/svg+xml'};
+const extOf=p=>(String(p).split('?')[0].split('.').pop()||'').toLowerCase();
+async function importLib(L,getB,getT){
+  const st=$('#imp-st'),say=m=>{if(st)st.textContent=m};const fresh=!lib.tracks.length;
+  const blobOf=async p=>{if(!p)return null;const b=await getB(p);return b?new Blob([b],{type:MIME[extOf(p)]||b.type||''}):null};
+  const T=L.tracks||[];let added=0,i=0,miss=0;
+  for(const t of T){i++;say('Import '+i+'/'+T.length+' : '+t.title);if(tById(t.id))continue;
+    const a=await blobOf(t.audio);if(!a){miss++;continue}
+    const c=await blobOf(t.cover);let lrc=t.lrcText||'';if(!lrc&&t.lrc){try{lrc=await getT(t.lrc)||''}catch(e){}}
+    await set('a:'+t.id,a);if(c)await set('c:'+t.id,c);
+    lib.tracks.push({id:t.id,key:(t.title||'').toLowerCase().trim(),title:t.title,artist:t.artist||'',audioExt:extOf(t.audio),coverExt:c?extOf(t.cover):'',lrcText:lrc,duration:await dur(a),size:a.size});added++}
+  for(const p of (L.playlists||[])){if(lib.playlists.some(x=>x.id===p.id))continue;const c=await blobOf(p.cover);if(c)await set('p:'+p.id,c);lib.playlists.push({id:p.id,name:p.name,desc:p.desc||'',ids:p.ids||[],coverExt:c?extOf(p.cover):''})}
+  lib.news=lib.news||[];for(const n of (L.news||[])){if(!lib.news.some(x=>x.id===n.id))lib.news.push(n)}
+  const s=L.settings||{};
+  if(fresh)lib.settings={...lib.settings,name:s.name||lib.settings.name,tagline:s.tagline==null?lib.settings.tagline:s.tagline,footer:s.footer==null?lib.settings.footer:s.footer};
+  if(s.logo&&!lib.settings.logoExt){const b=await blobOf(s.logo);if(b){await set('logo',b);delete U.logo;lib.settings.logoExt=extOf(s.logo)}}
+  await save();say('');toast(added+' titre(s) importé(s)'+(miss?' · '+miss+' sans MP3 trouvé':''));render()}
+async function importZip(file){
+  if(!window.JSZip){toast('JSZip non chargé : vérifie ta connexion');return}
+  try{const z=await JSZip.loadAsync(file);const jf=Object.keys(z.files).find(n=>/(^|\/)library\.json$/.test(n));
+    if(!jf){toast('library.json introuvable dans ce zip');return}
+    const pre=jf.slice(0,jf.length-'library.json'.length),L=JSON.parse(await z.file(jf).async('string'));
+    await importLib(L,async p=>{const f=z.file(pre+p);return f?await f.async('blob'):null},async p=>{const f=z.file(pre+p);return f?await f.async('string'):''})
+  }catch(e){toast('Import impossible : '+e.message)}}
+async function importUrl(){
+  let u=$('#imp-u').value.trim();if(!u){toast('Colle l’adresse de l’ancien site');return}
+  if(!/^https?:\/\//.test(u))u='https://'+u;u=u.replace(/(index|admin)\.html$/,'');if(!u.endsWith('/'))u+='/';
+  try{const r=await fetch(u+'library.json',{cache:'no-store'});if(!r.ok)throw new Error('library.json introuvable ('+r.status+')');const L=await r.json();
+    await importLib(L,async p=>{const x=await fetch(u+p);return x.ok?await x.blob():null},async p=>{const x=await fetch(u+p);return x.ok?await x.text():''})
+  }catch(e){toast('Import impossible : '+e.message)}}
+const IMPHTML=`<div class="box"><b>Importer des titres</b><p class="s" style="margin:6px 0 0;line-height:1.5">Récupère ce que tu as déjà publié ailleurs (ancien site) ou un zip de publication. Les titres déjà présents ne sont pas écrasés.</p>
+<label>Adresse de l’ancien site</label><input id="imp-u" placeholder="https://ilanmichelot-afk.github.io/ilansong/"><div style="margin-top:10px"><button class="btn g" id="imp-ub">Importer depuis cette adresse</button></div>
+<label>Ou un zip de publication</label><input type="file" id="imp-z" accept=".zip"><div class="s" id="imp-st" style="margin-top:10px"></div></div>`;
+function wireImport(){$('#imp-ub').onclick=importUrl;$('#imp-z').onchange=e=>{if(e.target.files[0])importZip(e.target.files[0]);e.target.value=''}}
+
 /* publier */
 function rPub(){
   $('#v-pub').innerHTML=`<h1>Publier sur Netlify</h1><p class="sub">Tes changements sont d’abord enregistrés dans ce navigateur (aperçu local sur index.html). Pour les mettre en ligne :</p>
   <div class="box"><ol><li>Clique sur le bouton ci-dessous : un fichier <b>ilanova-publication.zip</b> est téléchargé.</li><li>Dézippe-le : tu obtiens <b>library.json</b> et les dossiers <b>musiques</b>, <b>paroles</b>, <b>covers</b>.</li><li>Mets-les dans le même dossier que <b>index.html</b> et <b>admin.html</b>.</li><li>Glisse ce dossier sur <b>app.netlify.com/drop</b> (ou sur ton site, onglet Deploys).</li></ol>
   <div style="margin-top:16px"><button class="btn g" id="pb">${I('dl')} Générer la publication (${lib.tracks.length} titres)</button></div><div class="s" id="pst" style="margin-top:10px"></div></div>
   <div class="box"><b>Bon à savoir</b><p class="s" style="margin-top:6px;line-height:1.6">Les visiteurs voient seulement ce que tu as publié. Modifier admin.html chez quelqu’un d’autre ne change rien pour les autres, car tout est enregistré dans son propre navigateur.</p></div>`;
-  $('#pb').onclick=publish}
+  $('#pb').onclick=publish;$('#v-pub').insertAdjacentHTML('beforeend',IMPHTML);wireImport()}
 async function publish(){
   if(!window.JSZip){toast('JSZip non chargé : vérifie ta connexion');return}
   const st=$('#pst');st.textContent='Préparation…';

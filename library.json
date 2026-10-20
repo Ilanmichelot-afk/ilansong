@@ -2,7 +2,7 @@
  "settings": {
   "name": "ILANOVA",
   "tagline": "Ta musique, sans limites.",
-  "footer": "Créé avec Claude et Ilan, pour te soutenir dans ton travail de monstre",
+  "footer": "Créé avec Claude et Ilan",
   "logo": ""
  },
  "tracks": [
@@ -95,21 +95,101 @@
    "lrc": "paroles/la-rvfleuze-argent-sale-a-colo-jjo3.lrc"
   },
   {
-   "id": "jul-parfum-quartier-album-grat-jzy5",
-   "title": "Parfum quartier",
-   "artist": "JUL",
-   "audio": "musiques/jul-parfum-quartier-album-grat-jzy5.mp3",
-   "cover": "covers/jul-parfum-quartier-album-grat-jzy5.jpg",
-   "lrc": "paroles/jul-parfum-quartier-album-grat-jzy5.lrc"
+   "id": "mauvais-djo-wagyu-clip-officie-d1oy",
+   "title": "WAGYU",
+   "artist": "Mauvais Djo",
+   "audio": "musiques/mauvais-djo-wagyu-clip-officie-d1oy.mp3",
+   "cover": "covers/mauvais-djo-wagyu-clip-officie-d1oy.jpg",
+   "lrc": "paroles/mauvais-djo-wagyu-clip-officie-d1oy.lrc"
+  },
+  {
+   "id": "jul-parfum-quartier-album-grat-c3me",
+   "title": "Parfum Quartier",
+   "artist": "Jul",
+   "audio": "musiques/jul-parfum-quartier-album-grat-c3me.mp3",
+   "cover": "covers/jul-parfum-quartier-album-grat-c3me.jpg",
+   "lrc": "paroles/jul-parfum-quartier-album-grat-c3me.lrc"
+  },
+  {
+   "id": "fennecxx-dj-alex-spooky-super--y2rk",
+   "title": "SPOOKY (Super Slowed)",
+   "artist": "Fennecxx - DJ ALEX",
+   "audio": "musiques/fennecxx-dj-alex-spooky-super--y2rk.mp3",
+   "cover": "covers/fennecxx-dj-alex-spooky-super--y2rk.jpg",
+   "lrc": "paroles/fennecxx-dj-alex-spooky-super--y2rk.lrc"
+  },
+  {
+   "id": "undertale-finale-but-its-by-ha-cv3r",
+   "title": "Finale",
+   "artist": "Undertale",
+   "audio": "musiques/undertale-finale-but-its-by-ha-cv3r.mp3",
+   "cover": "covers/undertale-finale-but-its-by-ha-cv3r.jpg",
+   "lrc": ""
+  },
+  {
+   "id": "and-the-seraphim-wept-azure-tw-yhpk",
+   "title": "And The Seraphim Wept",
+   "artist": "D.Meletis",
+   "audio": "musiques/and-the-seraphim-wept-azure-tw-yhpk.mp3",
+   "cover": "covers/and-the-seraphim-wept-azure-tw-yhpk.jpg",
+   "lrc": ""
+  },
+  {
+   "id": "close-to-me-red-moonrise-mix-bmj6",
+   "title": "CLOSE TO ME",
+   "artist": "EPIC",
+   "audio": "musiques/close-to-me-red-moonrise-mix-bmj6.mp3",
+   "cover": "covers/close-to-me-red-moonrise-mix-bmj6.jpg",
+   "lrc": ""
+  },
+  {
+   "id": "stromae-papaoutai-official-vid-no96",
+   "title": "Papaoutai",
+   "artist": "Stromae",
+   "audio": "musiques/stromae-papaoutai-official-vid-no96.mp3",
+   "cover": "covers/stromae-papaoutai-official-vid-no96.jpg",
+   "lrc": "paroles/stromae-papaoutai-official-vid-no96.lrc"
+  },
+  {
+   "id": "franglish-ft-keblackofficiel-g-qevu",
+   "title": "Génération Impolie",
+   "artist": "Franglish et Keblack",
+   "audio": "musiques/franglish-ft-keblackofficiel-g-qevu.mp3",
+   "cover": "covers/franglish-ft-keblackofficiel-g-qevu.jpg",
+   "lrc": "paroles/franglish-ft-keblackofficiel-g-qevu.lrc"
+  },
+  {
+   "id": "jalouse-x3c6",
+   "title": "Jalouse",
+   "artist": "Werenoi",
+   "audio": "musiques/jalouse-x3c6.mp3",
+   "cover": "covers/jalouse-x3c6.jpg",
+   "lrc": "paroles/jalouse-x3c6.lrc"
+  },
+  {
+   "id": "poney-dxov",
+   "title": "Poney",
+   "artist": "Werenoi",
+   "audio": "musiques/poney-dxov.mp3",
+   "cover": "covers/poney-dxov.jpg",
+   "lrc": "paroles/poney-dxov.lrc"
+  },
+  {
+   "id": "sur-paname-spyj",
+   "title": "Sur Paname",
+   "artist": "PNL",
+   "audio": "musiques/sur-paname-spyj.mp3",
+   "cover": "covers/sur-paname-spyj.jpg",
+   "lrc": "paroles/sur-paname-spyj.lrc"
   }
  ],
  "playlists": [],
  "news": [
   {
-   "id": "nmvehgcuy",
-   "date": "2026-10-18T23:55:05.626Z",
-   "title": "Parole stylé",
-   "text": "Nouveaux style de parole avec des vraie effet de quand le chanteur il parle,\n\nDes nouveaux changement arrive très bientôt."
+   "id": "nmvf8o29e",
+   "date": "2026-10-19T12:36:54.770Z",
+   "title": "Correction bug des son",
+   "text": "hier un problème avait eu que quand on lançai un son sa ne marcher pas ni les parole le bug et maintenant résolue\n\nDes amélioration arrive très bientôt."
   }
  ]
 }
