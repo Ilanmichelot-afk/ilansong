@@ -181,6 +181,14 @@
    "audio": "musiques/sur-paname-spyj.mp3",
    "cover": "covers/sur-paname-spyj.jpg",
    "lrc": "paroles/sur-paname-spyj.lrc"
+  },
+  {
+   "id": "elle-t-a-tue-f3ek",
+   "title": "Elle t’a tué",
+   "artist": "Alonzo",
+   "audio": "musiques/elle-t-a-tue-f3ek.mp3",
+   "cover": "covers/elle-t-a-tue-f3ek.png",
+   "lrc": "paroles/elle-t-a-tue-f3ek.lrc"
   }
  ],
  "playlists": [],
