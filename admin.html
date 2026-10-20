@@ -247,7 +247,7 @@ function rSync(){
   if(!T.length){$('#v-sync').innerHTML='<h1>Synchroniser les paroles</h1><div class="box"><div class="s">Ajoute d’abord un titre avec son MP3 (onglet Titres).</div></div>';return}
   $('#v-sync').innerHTML=`<h1>Synchroniser les paroles</h1><p class="sub">Écoute le son et appuie sur le gros bouton (ou sur Espace) au début de chaque mot. Le fichier .lrc se crée tout seul.</p>
   <div class="box"><label style="margin-top:0">Titre</label><select id="sy-t">${T.map(t=>`<option value="${t.id}">${esc(t.title)} · ${esc(t.artist)}</option>`).join('')}</select>
-  <label>Paroles (une ligne par ligne chantée)</label><textarea id="sy-l" rows="8" placeholder="Colle ici les paroles"></textarea>
+  <label>Paroles (une ligne par ligne chantée · mets &gt; au début d’une ligne pour l’aligner à droite)</label><textarea id="sy-l" rows="8" placeholder="Colle ici les paroles"></textarea>
   <label>Précision</label><div class="fx" id="sy-md"><button class="btn alt ${sy0.mode==='word'?'sel':''}" data-m="word">Mot par mot</button><button class="btn alt ${sy0.mode==='line'?'sel':''}" data-m="line">Ligne par ligne</button></div>
   <div class="acts"><button class="btn g" id="sy-go">Commencer</button></div></div>
   <div class="box" id="sy-stage" style="display:none"></div>`;
@@ -262,12 +262,12 @@ function rSync(){
 async function syStart(){
   const id=$('#sy-t').value,t=tById(id),blob=await get('a:'+id);
   if(!blob){toast('MP3 introuvable pour ce titre');return}
-  const lines=$('#sy-l').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  const raw=$('#sy-l').value.split('\n').map(x=>x.trim()).filter(Boolean),rights=raw.map(l=>/^>/.test(l)),lines=raw.map(l=>l.replace(/^>\s*/,''));
   if(!lines.length){toast('Colle d’abord les paroles');return}
   syStop();
   const au=new Audio(await url('a:'+id));au.preservesPitch=true;
   const items=[];lines.forEach((ln,li)=>{if(sy0.mode==='word')ln.split(/\s+/).forEach(x=>items.push({li,x,t:null}));else items.push({li,x:ln,t:null})});
-  sy={id,t,lines,items,mode:sy0.mode,ni:0,tap:true,lat:.12,au,loop:false,lastK:-2,drag:false};
+  sy={id,t,lines,rights,items,mode:sy0.mode,ni:0,tap:true,lat:.12,au,loop:false,lastK:-2,drag:false};
   const st=$('#sy-stage');st.style.display='block';
   st.innerHTML=`<div class="fx" style="justify-content:space-between"><div class="fx"><button class="btn alt" id="sy-pp">Lecture</button><span class="s" id="sy-time">0:00 / 0:00</span></div>
   <div class="fx"><button class="btn alt sel" id="sy-mt">Taper</button><button class="btn alt" id="sy-mp">Aperçu</button></div></div>
@@ -314,7 +314,7 @@ function syTick(){
   if(!sy.drag&&sy.au.duration)$('#sy-seek').value=c/sy.au.duration*1000}
 function toLRC(){
   const L=sy.lines.map((ln,li)=>{const it=sy.items.filter(x=>x.li===li);if(!it.length||it.some(x=>x.t==null))return null;
-    return sy.mode==='word'?'['+ts(it[0].t)+'] '+it.map(w=>'<'+ts(w.t)+'>'+w.x).join(' '):'['+ts(it[0].t)+'] '+it[0].x});
+    return sy.mode==='word'?'['+ts(it[0].t)+'] '+it.map((w,k)=>'<'+ts(w.t)+'>'+(k===0&&sy.rights[li]?'>':'')+w.x).join(' '):'['+ts(it[0].t)+'] '+(sy.rights[li]?'>':'')+it[0].x});
   return L.filter(Boolean).join('\n')}
 async function sySave(){
   const out=toLRC(),n=sy.items.filter(x=>x.t==null).length;
