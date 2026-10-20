@@ -113,13 +113,13 @@ body.pause .eq i{animation-play-state:paused}
 #full.on{transform:none}
 #full>*{position:relative;z-index:1;flex:none}
 #full>#bgw{position:absolute;inset:0;z-index:0;will-change:transform}
-#bgc{position:absolute;inset:-22%;background-size:cover;background-position:center;filter:blur(46px) saturate(1.8) brightness(.62);animation:bgm 30s ease-in-out infinite alternate;will-change:transform}
+#bgc{position:absolute;inset:-22%;background-size:cover;background-position:center;filter:blur(46px) saturate(1.8) brightness(.62);animation:bgm 22s ease-in-out infinite alternate;will-change:transform}
 @keyframes bgm{0%{transform:rotate(0) scale(1.05)}100%{transform:rotate(16deg) scale(1.3) translate(3%,2%)}}
 #bgb{position:absolute;inset:0;overflow:hidden}
 #bgb i{position:absolute;border-radius:50%;opacity:.8;will-change:transform}
-#bgb .k1{width:85%;height:65%;left:-25%;top:0;background:radial-gradient(closest-side,var(--c1,#ff2d95),transparent);animation:k1 17s ease-in-out infinite alternate}
-#bgb .k2{width:95%;height:60%;right:-35%;top:28%;background:radial-gradient(closest-side,var(--c2,#7a3cff),transparent);animation:k2 21s ease-in-out infinite alternate}
-#bgb .k3{width:80%;height:70%;left:10%;bottom:-25%;background:radial-gradient(closest-side,var(--c3,#00c2ff),transparent);animation:k3 25s ease-in-out infinite alternate}
+#bgb .k1{width:85%;height:65%;left:-25%;top:0;background:radial-gradient(closest-side,var(--c1,#ff2d95),transparent);animation:k1 11s ease-in-out infinite alternate}
+#bgb .k2{width:95%;height:60%;right:-35%;top:28%;background:radial-gradient(closest-side,var(--c2,#7a3cff),transparent);animation:k2 14s ease-in-out infinite alternate}
+#bgb .k3{width:80%;height:70%;left:10%;bottom:-25%;background:radial-gradient(closest-side,var(--c3,#00c2ff),transparent);animation:k3 17s ease-in-out infinite alternate}
 @keyframes k1{0%{transform:translate(0,0) scale(1)}50%{transform:translate(45%,25%) scale(1.35)}100%{transform:translate(15%,70%) scale(.9)}}
 @keyframes k2{0%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-40%,30%) scale(.85)}100%{transform:translate(-15%,-20%) scale(1.3)}}
 @keyframes k3{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30%,-35%) scale(1.3)}100%{transform:translate(-20%,-10%) scale(.9)}}
@@ -250,9 +250,9 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clea
 let S={tracks:[],pls:[],news:[],set:{name:'ILANOVA',tagline:'Ta musique, sans limites.',footer:'',logo:''},preview:false};
 let mine=[];try{mine=JSON.parse(localStorage.getItem('ilanova_pl')||'[]')}catch(e){}
 const saveMine=()=>{try{localStorage.setItem('ilanova_pl',JSON.stringify(mine))}catch(e){toast('Stockage plein')}};
-const CFG0={theme:'dark',acc:'#1ed760',lys:28,blur:true,anim:true,react:true,rand:true};
-let cfg={...CFG0};try{cfg={...CFG0,...JSON.parse(localStorage.getItem('ilanova_cfg2')||'{}')}}catch(e){}
-const saveCfg=()=>{try{localStorage.setItem('ilanova_cfg2',JSON.stringify(cfg))}catch(e){}};
+const CFG0={theme:'dark',acc:'#1ed760',lys:28,blur:true,anim:true,react:false,rand:true};
+let cfg={...CFG0};try{const s3=localStorage.getItem('ilanova_cfg3');cfg={...CFG0,...JSON.parse(s3||localStorage.getItem('ilanova_cfg2')||'{}')};if(!s3)cfg.react=false}catch(e){}
+const saveCfg=()=>{try{localStorage.setItem('ilanova_cfg3',JSON.stringify(cfg))}catch(e){}};
 function applyCfg(){const r=document.documentElement;if(cfg.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',cfg.theme);
   r.style.setProperty('--red',cfg.acc);{const h=cfg.acc.replace('#','');const L=(parseInt(h.slice(0,2),16)*.299+parseInt(h.slice(2,4),16)*.587+parseInt(h.slice(4,6),16)*.114)/255;r.style.setProperty('--on',L>.5?'#000':'#fff')}r.style.setProperty('--lys',cfg.lys+'px');r.classList.toggle('noblur',!cfg.blur);r.classList.toggle('noanim',!cfg.anim);
   const dk=cfg.theme==='dark'||(cfg.theme==='auto'&&matchMedia('(prefers-color-scheme:dark)').matches);const m=document.querySelector('meta[name=theme-color]');if(m)m.content=dk?'#000000':'#ffffff'}
@@ -354,7 +354,7 @@ function openCfg(){
   modal(`<h3>Paramètres</h3><label>Thème</label>${seg('theme',[['auto','Auto'],['light','Clair'],['dark','Sombre']])}
   <label>Couleur</label><div class="sw">${ACCS.map(c=>`<i data-act="cs" data-k="acc" data-v="${c}" class="${cfg.acc===c?'on':''}" style="background:${c}"></i>`).join('')}</div>
   <label>Taille des paroles</label>${seg('lys',[[22,'Petite'],[28,'Normale'],[34,'Grande']])}
-  <div style="margin-top:8px">${tg('blur','Flou des paroles','Floute les lignes qui ne sont pas en cours.')}${tg('anim','Animations','Coupe-les si ton téléphone rame.')}${tg('react','Fond qui réagit au son','Le fond bouge et vibre avec les basses. Coupe-le si ton téléphone chauffe.')}</div>
+  <div style="margin-top:8px">${tg('blur','Flou des paroles','Floute les lignes qui ne sont pas en cours.')}${tg('anim','Animations','Coupe-les si ton téléphone rame.')}${tg('react','Fond qui réagit au son','Option : le fond gonfle et vibre avec les basses. Désactivé par défaut.')}</div>
   <div class="acts"><button class="btn alt" data-act="creset">Réinitialiser</button><button class="btn red" data-act="close">OK</button></div>`)}
 function setMode(m){const f=$('#full');f.dataset.m=m;$$('.bot button[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(m==='q')rQ()}
 function rQ(){CTX.qq=queue;$('#ql').innerHTML=queue.map((id,i)=>byId(id)?row(byId(id),'qq',i):'').join('');mark()}
@@ -435,9 +435,17 @@ function lyTick(){
   if(n!==li){li=n;const B=[0,.3,.8,1.5,2.4,3.4];
     lyP.forEach((p,i)=>{p.classList.toggle('on',i===n);p.classList.toggle('past',i<n);p.style.setProperty('--b',B[Math.min(Math.abs(i-n),5)]+'px');
       if(i!==n){const v=i<n?'100%':'0%';for(const sp of p.children)sp.style.setProperty('--p',v)}});
-    if(n>=0&&lyP[n]){const c=$('#ly');c.scrollTo({top:lyP[n].offsetTop-c.clientHeight*.3,behavior:'smooth'})}else $('#ly').scrollTo({top:0,behavior:'smooth'})}
+    if(n>=0&&lyP[n]){const c=$('#ly');snapTo(lyP[n].offsetTop-c.clientHeight*.3)}else snapTo(0)}
   if(n>=0&&lyP[n]){const ws=lines[n].ws,sp=lyP[n].children;
     for(let j=0;j<ws.length&&j<sp.length;j++){const w=ws[j],p=t<=w.t?0:t>=w.e?100:(t-w.t)/Math.max(.05,w.e-w.t)*100;sp[j].style.setProperty('--p',p+'%')}}}
+let snapRAF=0;
+function snapTo(y){const c=$('#ly');if(!c)return;cancelAnimationFrame(snapRAF);
+  y=Math.max(0,Math.min(c.scrollHeight-c.clientHeight,y));const d=y-c.scrollTop;
+  if(Math.abs(d)<2||!cfg.anim){c.scrollTop=y;return}
+  c.scrollTop+=d*.7;const t0=performance.now();let last=t0;
+  (function f(now){const dt=Math.min(50,now-last);last=now;const r=y-c.scrollTop;
+    if(Math.abs(r)<.6||now-t0>450){c.scrollTop=y;return}
+    c.scrollTop+=r*(1-Math.exp(-dt/45));snapRAF=requestAnimationFrame(f)})(t0)}
 function lyLoop(){if(looping)return;looping=true;(function f(){lyTick();fxTick();if(!au.paused)requestAnimationFrame(f);else looping=false})()}
 /* le fond réagit aux basses : on analyse le son une fois (sans toucher à la lecture) */
 const ENV={};let fxEnv=null,fxS=0;
