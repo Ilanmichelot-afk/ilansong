@@ -189,6 +189,70 @@
    "audio": "musiques/elle-t-a-tue-f3ek.mp3",
    "cover": "covers/elle-t-a-tue-f3ek.png",
    "lrc": "paroles/elle-t-a-tue-f3ek.lrc"
+  },
+  {
+   "id": "onizuka-l2yo",
+   "title": "Onizuka",
+   "artist": "PNL",
+   "audio": "musiques/onizuka-l2yo.mp3",
+   "cover": "covers/onizuka-l2yo.jpg",
+   "lrc": "paroles/onizuka-l2yo.lrc"
+  },
+  {
+   "id": "hamza-mi-amor-visualizer-a7h5",
+   "title": "Mi amor",
+   "artist": "Hamza",
+   "audio": "musiques/hamza-mi-amor-visualizer-a7h5.mp3",
+   "cover": "covers/hamza-mi-amor-visualizer-a7h5.jpg",
+   "lrc": "paroles/hamza-mi-amor-visualizer-a7h5.lrc"
+  },
+  {
+   "id": "gradur-jamais-clip-officiel-pc2j",
+   "title": "Jamais",
+   "artist": "Gradur",
+   "audio": "musiques/gradur-jamais-clip-officiel-pc2j.mp3",
+   "cover": "covers/gradur-jamais-clip-officiel-pc2j.jpg",
+   "lrc": "paroles/gradur-jamais-clip-officiel-pc2j.lrc"
+  },
+  {
+   "id": "koba-lad-coffre-plein-ft-maes--oh6u",
+   "title": "COFFRE PLEIN",
+   "artist": "KOBA LAD",
+   "audio": "musiques/koba-lad-coffre-plein-ft-maes--oh6u.mp3",
+   "cover": "covers/koba-lad-coffre-plein-ft-maes--oh6u.jpg",
+   "lrc": "paroles/koba-lad-coffre-plein-ft-maes--oh6u.lrc"
+  },
+  {
+   "id": "werenoi-jamal-clip-officiel-x9b9",
+   "title": "Jamal",
+   "artist": "Werenoi",
+   "audio": "musiques/werenoi-jamal-clip-officiel-x9b9.mp3",
+   "cover": "covers/werenoi-jamal-clip-officiel-x9b9.jpg",
+   "lrc": "paroles/werenoi-jamal-clip-officiel-x9b9.lrc"
+  },
+  {
+   "id": "bambina-osc8",
+   "title": "Bambina",
+   "artist": "PNL",
+   "audio": "musiques/bambina-osc8.mp3",
+   "cover": "covers/bambina-osc8.jpg",
+   "lrc": "paroles/bambina-osc8.lrc"
+  },
+  {
+   "id": "lune-de-fiel-gwgv",
+   "title": "Lune de fiel",
+   "artist": "MZ - Marlo",
+   "audio": "musiques/lune-de-fiel-gwgv.mp3",
+   "cover": "covers/lune-de-fiel-gwgv.jpg",
+   "lrc": "paroles/lune-de-fiel-gwgv.lrc"
+  },
+  {
+   "id": "mz-toi-sur-moi-clip-officiel-h2vn",
+   "title": "Toi sur moi",
+   "artist": "MZ",
+   "audio": "musiques/mz-toi-sur-moi-clip-officiel-h2vn.mp3",
+   "cover": "covers/mz-toi-sur-moi-clip-officiel-h2vn.jpg",
+   "lrc": "paroles/mz-toi-sur-moi-clip-officiel-h2vn.lrc"
   }
  ],
  "playlists": [],
