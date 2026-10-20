@@ -406,10 +406,19 @@ addEventListener('popstate',()=>{const f=$('#full');if(f.classList.contains('on'
 
 const au=new Audio();au.preload='metadata';
 let cur=null,queue=[],shuf=false,lines=[],li=-1,drag=false;
-function parseLRC(s){const o=[];(s||'').split('\n').forEach(l=>{const tags=[...l.matchAll(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g)];if(!tags.length)return;let raw=l.replace(/\[[^\]]*\]/g,'').trim();let right=false;{const mk=raw.match(/^((?:<\d+:\d+(?:[.:]\d+)?>)?)\s*>\s*/);if(mk){right=true;raw=mk[1]+raw.slice(mk[0].length)}}
-  let ws=null;if(/<\d+:\d+/.test(raw)){ws=[];const re=/<(\d+):(\d+(?:[.:]\d+)?)>([^<]*)/g;let m;while((m=re.exec(raw))){const w=m[3].trim();if(w)ws.push({t:+m[1]*60+ +m[2].replace(':','.'),x:w})}}
+function parseLRC(s){const o=[];(s||'').split('\n').forEach(l=>{const tags=[...l.matchAll(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g)];if(!tags.length)return;const raw=l.replace(/\[[^\]]*\]/g,'').trim();
+  const lineTime = +tags[0][1]*60 + +tags[0][2].replace(':','.');
+  let ws=null;if(/<\d+:\d+/.test(raw)){
+    ws=[];
+    const firstTagIdx = raw.indexOf('<');
+    if(firstTagIdx > 0){
+      const initialText = raw.slice(0, firstTagIdx).trim();
+      if(initialText){ws.push({t: lineTime, x: initialText})}
+    }
+    const re=/<(\d+):(\d+(?:[.:]\d+)?)>([^<]*)/g;let m;while((m=re.exec(raw))){const w=m[3].trim();if(w)ws.push({t:+m[1]*60+ +m[2].replace(':','.'),x:w})}
+  }
   const x=raw.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
-  tags.forEach(m=>o.push({t:+m[1]*60+ +m[2].replace(':','.'),x,ws,right,exp:!!(ws&&ws.length)}))});
+  tags.forEach(m=>o.push({t:lineTime,x,ws,exp:!!(ws&&ws.length)}))});
   o.sort((a,b)=>a.t-b.t);
   o.forEach((l,i)=>{const nxt=i+1<o.length?o[i+1].t:Infinity;
     if(l.exp){const cap=w=>Math.min(2.2,.35+.12*w.x.length);
