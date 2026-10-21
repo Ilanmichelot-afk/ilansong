@@ -66,6 +66,11 @@ input[type=range]{padding:0;background:none;border:0;accent-color:#ff2d95}
 #gbox{width:100%;max-width:340px;text-align:center;background:#171722;border-radius:24px;padding:28px 24px;box-shadow:0 20px 60px #000a;animation:fu .6s}
 #gbox.shake{animation:shk .4s}
 @keyframes shk{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+.sy-dots{display:flex;align-items:center;gap:8px;height:30px;opacity:0;transition:opacity .4s;margin-bottom:6px}.sy-dots.on{opacity:1}
+.sy-dots i{width:12px;height:12px;border-radius:50%;background:#fff;opacity:.3;transition:transform .15s}.sy-dots .s{margin-left:6px}
+@media(min-width:721px) and (max-width:1000px){aside{width:176px}main{padding:20px}.nv{padding:10px;font-size:14px}}
+@media(min-width:1280px){main{max-width:1180px;padding:32px 40px}}
+@media(max-width:720px){.tapb{height:96px}#syl{max-height:38vh}.acts{flex-wrap:wrap}.sheet{padding:18px}}
 @media(max-width:720px){body{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;padding:10px}aside small,.brand{display:none}.nv{flex:none;padding:10px 12px;font-size:13px}main{padding:16px}}
 </style>
 </head>
@@ -87,7 +92,7 @@ input[type=range]{padding:0;background:none;border:0;accent-color:#ff2d95}
 <symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
 </defs></svg>
 <i class="orb"></i>
-<div id="gate"><div id="gbox"><div class="brand" style="padding:0 0 6px;font-size:30px">ILANOVA</div><p class="s" style="margin-bottom:18px;font-size:14px">Espace admin protégé</p><input id="gpw" type="password" placeholder="Mot de passe" autocomplete="current-password"><button class="btn g" id="gbtn" style="width:100%;justify-content:center;margin-top:12px">Entrer</button><div id="gerr" style="color:#ff7088;font-size:13px;margin-top:10px;min-height:18px"></div></div></div>
+<div id="gate"><div id="gbox"><div class="brand" style="padding:0 0 6px;font-size:30px">ILANOVA</div><p class="s" style="margin-bottom:18px;font-size:14px">Connexion à l’espace admin</p><input id="gem" type="email" placeholder="Adresse e-mail" autocomplete="username" style="margin-bottom:10px"><input id="gpw" type="password" placeholder="Mot de passe" autocomplete="current-password"><button class="btn g" id="gbtn" style="width:100%;justify-content:center;margin-top:12px">Entrer</button><div id="gerr" style="color:#ff7088;font-size:13px;margin-top:10px;min-height:18px"></div></div></div>
 <aside>
  <div class="brand">ILANOVA</div><small>Espace admin</small>
  <button class="nv on" data-v="dash"><svg class="ic"><use href="#i-grid"/></svg>Tableau de bord</button>
@@ -106,6 +111,7 @@ input[type=range]{padding:0;background:none;border:0;accent-color:#ff2d95}
   <h1>Titres</h1><p class="sub">Glisse tes MP3, tes fichiers .lrc et tes pochettes. Ils sont associés par le nom du fichier.</p>
   <div class="drop" id="drop"><svg class="ic"><use href="#i-up"/></svg><div><b>Glisse tes fichiers ici</b> ou touche pour choisir</div><div class="s" style="margin-top:6px">mon-son.mp3 + mon-son.lrc + mon-son.jpg = un titre complet</div></div>
   <input type="file" id="fi" multiple accept="audio/*,.lrc,image/*" hidden>
+  <div class="fx" style="margin-top:14px"><input id="tq" placeholder="Rechercher un titre ou un artiste…" style="flex:1;min-width:160px"><select id="ts" style="width:auto"><option value="add">Ordre d’ajout</option><option value="recent">Plus récents</option><option value="az">A–Z</option><option value="art">Artiste</option><option value="nolrc">Sans paroles d’abord</option></select></div>
   <div class="box" id="tl"></div>
  </section>
  <section class="view" id="v-pl"></section>
@@ -125,16 +131,24 @@ const mb=n=>(n/1048576).toFixed(1)+' Mo';
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove('on'),2600)}
 
 /* mot de passe (empreinte SHA-256, le mot de passe n’est pas écrit dans le fichier) */
-const PH='c38b4d94e780dbbfc833b33fcbbcd20d3869b9b068f8852f841a9ee5a8292e65',SALT='ilanova-v1';
+const PH='f47902687872c4eaab2c97b4e20da90228acd62b5c33846a1c928b7e0bfd91f9',SALT='ilanova-v2';
 async function sha(s){const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(SALT+s));return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')}
-const gate=$('#gate');let okS=false;try{okS=sessionStorage.getItem('ilanova_ok')==='1'}catch(e){}
+const gate=$('#gate');let okS=false;try{okS=sessionStorage.getItem('ilanova_ok2')==='1'}catch(e){}
 if(okS)gate.style.display='none';
+function lockLeft(){try{const f=JSON.parse(localStorage.getItem('ilanova_fail')||'{}');return Math.max(0,Math.ceil(((f.until||0)-Date.now())/1000))}catch(e){return 0}}
 async function tryPw(){const e=$('#gerr');
+  const L=lockLeft();if(L>0){e.textContent='Trop d’essais. Réessaie dans '+L+' s';return}
   if(!window.crypto||!crypto.subtle){e.textContent='Ouvre cette page en https pour te connecter.';return}
-  if(await sha($('#gpw').value)===PH){try{sessionStorage.setItem('ilanova_ok','1')}catch(x){}gate.classList.add('out');setTimeout(()=>{gate.style.display='none'},500)}
-  else{e.textContent='Mot de passe incorrect';const b=$('#gbox');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');$('#gpw').value=''}}
-$('#gbtn').onclick=tryPw;$('#gpw').onkeydown=e=>{if(e.key==='Enter')tryPw()};
-$('#lock').onclick=()=>{try{sessionStorage.removeItem('ilanova_ok')}catch(e){}gate.style.display='flex';void gate.offsetWidth;gate.classList.remove('out');$('#gpw').value='';$('#gerr').textContent=''};
+  const mail=$('#gem').value.trim().toLowerCase();
+  await new Promise(r=>setTimeout(r,500));
+  if(await sha(mail+'|'+$('#gpw').value)===PH){try{sessionStorage.setItem('ilanova_ok2','1');localStorage.removeItem('ilanova_fail')}catch(x){}gate.classList.add('out');setTimeout(()=>{gate.style.display='none'},500)}
+  else{let f={n:0};try{f=JSON.parse(localStorage.getItem('ilanova_fail')||'{"n":0}')}catch(x){}f.n=(f.n||0)+1;
+    if(f.n>=5){f.until=Date.now()+Math.min(3600,60*Math.pow(2,f.n-5))*1000}
+    try{localStorage.setItem('ilanova_fail',JSON.stringify(f))}catch(x){}
+    e.textContent=f.n>=5?'Trop d’essais. Réessaie dans '+lockLeft()+' s':'Adresse e-mail ou mot de passe incorrect';
+    const b=$('#gbox');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');$('#gpw').value=''}}
+$('#gbtn').onclick=tryPw;$('#gpw').onkeydown=$('#gem').onkeydown=e=>{if(e.key==='Enter')tryPw()};
+$('#lock').onclick=()=>{try{sessionStorage.removeItem('ilanova_ok2')}catch(e){}gate.style.display='flex';void gate.offsetWidth;gate.classList.remove('out');$('#gpw').value='';$('#gerr').textContent=''};
 
 /* stockage (IndexedDB, partagé avec index.html si même site) */
 let _db;const db=()=>_db||(_db=new Promise((res,rej)=>{const r=indexedDB.open('ilanova',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}));
@@ -166,14 +180,19 @@ function rDash(){
   <div class="grid">${[['Titres',T.length,''],['Minutes de musique',Math.round(dur/60),''],['Playlists officielles',lib.playlists.length,''],['Poids total',0,mb(size)]].map((s,i)=>`<div class="st" style="--i:${i}"><b data-n="${s[1]}">${s[2]||0}</b><span>${s[0]}</span></div>`).join('')}</div>
   <div class="box fx"><svg class="ring" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="42"/><circle class="fg" id="rf" cx="50" cy="50" r="42"/></svg>
   <div><h2 style="font-size:20px">${pct}% avec paroles</h2><p class="s" style="margin:6px 0 14px">${wl} titre(s) sur ${T.length} ont un fichier .lrc</p><button class="btn g" data-go="tit">${I('up')} Ajouter des titres</button></div></div>
+  <div class="box"><b>Stockage du navigateur</b><div class="s" id="stor" style="margin-top:6px">Calcul…</div></div>
   <div class="box"><h2 style="font-size:17px;margin-bottom:8px">À compléter</h2>${todo.length?todo.map(t=>`<div class="tr"><div class="i"><div class="t">${esc(t.title)}</div></div>${t.lrcText?'':'<span class="bd no">sans paroles</span>'}${t.coverExt?'':'<span class="bd no">sans pochette</span>'}<button class="ib" data-ed="${t.id}">${I('edit')}</button></div>`).join(''):'<div class="s">Tout est complet.</div>'}</div>`;
   $$('#v-dash [data-n]').forEach(e=>{if(+e.dataset.n)count(e,+e.dataset.n)});$$('#v-dash b').forEach(b=>{if(!b.dataset.n||b.dataset.n==='0')b.textContent=b.textContent||'0'});
   const sz=$$('#v-dash b')[3];sz.textContent=mb(size);
-  setTimeout(()=>{const r=$('#rf');if(r)r.style.strokeDashoffset=264*(1-pct/100)},80)}
+  setTimeout(()=>{const r=$('#rf');if(r)r.style.strokeDashoffset=264*(1-pct/100)},80);
+  if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(e=>{const el=$('#stor');if(el)el.textContent=mb(e.usage||0)+' utilisés sur '+mb(e.quota||0)}).catch(()=>{})}
 
 /* titres */
+const tf={q:'',s:'add'};
+function titList(){let T=lib.tracks.filter(t=>!tf.q||(t.title+' '+(t.artist||'')).toLowerCase().includes(tf.q));
+  if(tf.s==='recent')T=[...T].reverse();else if(tf.s==='az')T=[...T].sort((x,y)=>x.title.localeCompare(y.title,'fr'));else if(tf.s==='art')T=[...T].sort((x,y)=>(x.artist||'').localeCompare(y.artist||'','fr'));else if(tf.s==='nolrc')T=[...T].sort((x,y)=>!!x.lrcText-!!y.lrcText);return T}
 async function rTit(){
-  const T=lib.tracks;$('#tl').innerHTML=T.length?T.map((t,i)=>`<div class="tr" style="--i:${i}"><div class="th" data-c="${t.coverExt?t.id:''}"></div><div class="i"><div class="t">${esc(t.title)}</div><div class="s">${esc(t.artist)} · ${fmt(t.duration)} · ${mb(t.size||0)}</div></div><span class="bd ${t.lrcText?'ok':'no'}">${t.lrcText?'paroles':'sans paroles'}</span><button class="ib" data-ed="${t.id}">${I('edit')}</button><button class="ib" data-del="${t.id}">${I('trash')}</button></div>`).join(''):'<div class="s" style="padding:10px">Aucun titre pour l’instant.</div>';
+  const T=titList();$('#tl').innerHTML=T.length?T.map((t,i)=>`<div class="tr" style="--i:${i}"><div class="th" data-c="${t.coverExt?t.id:''}"></div><div class="i"><div class="t">${esc(t.title)}</div><div class="s">${esc(t.artist)} · ${fmt(t.duration)} · ${mb(t.size||0)}</div></div><span class="bd ${t.lrcText?'ok':'no'}">${t.lrcText?'paroles':'sans paroles'}</span><button class="ib" data-ed="${t.id}">${I('edit')}</button><button class="ib" data-del="${t.id}">${I('trash')}</button></div>`).join(''):'<div class="s" style="padding:10px">Aucun titre pour l’instant.</div>';
   for(const e of $$('#tl .th[data-c]')){if(e.dataset.c)e.style.backgroundImage=`url('${await url('c:'+e.dataset.c)}')`}}
 const dur=blob=>new Promise(res=>{const a=new Audio(),u=URL.createObjectURL(blob);a.preload='metadata';a.onloadedmetadata=()=>{res(a.duration);URL.revokeObjectURL(u)};a.onerror=()=>res(0);setTimeout(()=>res(0),5000);a.src=u});
 async function ingest(files){
@@ -256,9 +275,11 @@ function rSync(){
   $$('#sy-md button').forEach(b=>b.onclick=()=>{sy0.mode=b.dataset.m;$$('#sy-md button').forEach(x=>x.classList.toggle('sel',x===b))});
   $('#sy-go').onclick=syStart;
   if(!syKeys){syKeys=true;document.addEventListener('keydown',e=>{
-    if(e.code!=='Space'||!sy||!$('#v-sync').classList.contains('on'))return;
+    if(!sy||!$('#v-sync').classList.contains('on'))return;
     if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)&&document.activeElement.type!=='range')return;
-    e.preventDefault();if(e.repeat)return;if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();syTap()})}}
+    if(e.code==='Space'){e.preventDefault();if(e.repeat)return;if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();syTap()}
+    else if(e.code==='KeyZ'){e.preventDefault();$('#sy-undo').click()}
+    else if(e.code==='KeyP'){e.preventDefault();$('#sy-pp').click()}})}}
 async function syStart(){
   const id=$('#sy-t').value,t=tById(id),blob=await get('a:'+id);
   if(!blob){toast('MP3 introuvable pour ce titre');return}
@@ -272,12 +293,13 @@ async function syStart(){
   st.innerHTML=`<div class="fx" style="justify-content:space-between"><div class="fx"><button class="btn alt" id="sy-pp">Lecture</button><span class="s" id="sy-time">0:00 / 0:00</span></div>
   <div class="fx"><button class="btn alt sel" id="sy-mt">Taper</button><button class="btn alt" id="sy-mp">Aperçu</button></div></div>
   <input type="range" id="sy-seek" min="0" max="1000" value="0" style="width:100%;margin:10px 0">
+  <div class="sy-dots" id="sy-dots"><i></i><i></i><i></i><span class="s">En attente du texte…</span></div>
   <div id="syl"></div>
   <button class="tapb" id="sy-tap">${sy.mode==='word'?'TAP · mot suivant':'TAP · ligne suivante'}</button>
   <div class="fx" style="margin-top:12px"><span class="s">Vitesse</span><button class="btn alt sel" data-r="1">1×</button><button class="btn alt" data-r=".85">0,85×</button><button class="btn alt" data-r=".7">0,7×</button></div>
   <label>Compensation du temps de réaction : <b id="sy-lv">0,12</b> s (monte si tes mots sont en retard)</label><input type="range" id="sy-lat" min="0" max="0.4" step="0.01" value="0.12" style="width:100%">
   <div class="fx" style="margin-top:14px"><button class="btn alt" id="sy-undo">Annuler le dernier</button><button class="btn alt" id="sy-reset">Tout effacer</button><button class="btn alt" id="sy-dl">Télécharger .lrc</button><button class="btn g" id="sy-save">Enregistrer dans le titre</button></div>
-  <p class="s" style="margin-top:10px;line-height:1.5">Astuce : clique sur un mot pour reprendre à cet endroit. En mode Aperçu, clique sur un mot pour écouter ce passage.</p>`;
+  <p class="s" style="margin-top:10px;line-height:1.5">Astuce : Espace = taper, Z = annuler, P = lecture/pause. Clique sur un mot pour reprendre à cet endroit. En mode Aperçu, clique sur un mot pour écouter ce passage.</p>`;
   let h='';lines.forEach((ln,li)=>{h+=`<div class="sy-line">`+items.map((x,i)=>x.li===li?`<span class="sy-w" data-i="${i}">${esc(x.x)}</span>`:'').filter(Boolean).join(' ')+'</div>'});
   const box=$('#syl');box.innerHTML=h;sy.sp=[...box.querySelectorAll('.sy-w')];
   au.onplay=au.onpause=()=>{$('#sy-pp').textContent=au.paused?'Lecture':'Pause';if(!au.paused)syLoop()};
@@ -305,8 +327,15 @@ function syTap(){
   if(sy.ni>=sy.items.length)toast('Terminé ! Passe en Aperçu pour vérifier, puis enregistre.');
   syTick()}
 function syLoop(){if(sy.loop)return;sy.loop=true;(function f(){syTick();if(sy&&!sy.au.paused)requestAnimationFrame(f);else if(sy)sy.loop=false})()}
+function syDots(c){const el=$('#sy-dots');if(!el)return;let on=false,pr=0,loop=false;
+  if(sy.tap){const lp=sy.ni>0?sy.items[sy.ni-1].t:null;if(!sy.au.paused&&sy.ni<sy.items.length&&(lp==null||c-lp>4)){on=true;loop=true}}
+  else{const st=[],en=[];sy.lines.forEach((_,li)=>{const it=sy.items.filter(x=>x.li===li&&x.t!=null);if(it.length){st[li]=it[0].t;en[li]=it[it.length-1].t+.8}});
+    let pe=0;for(let li=0;li<sy.lines.length;li++){if(st[li]==null)continue;
+      if(st[li]-pe>=(pe===0?2.5:5)&&c>=pe+(pe===0?0:.4)&&c<st[li]-.25){on=true;pr=(c-pe)/Math.max(.1,st[li]-.25-pe);break}pe=en[li]}}
+  el.classList.toggle('on',on);
+  [...el.querySelectorAll('i')].forEach((d,k)=>{const f=loop?((performance.now()/450)%3>=k?1:0):Math.max(0,Math.min(1,pr*3-k));d.style.opacity=(.3+.7*f).toFixed(2);d.style.transform='scale('+(.8+.35*f).toFixed(2)+')'})}
 function syTick(){
-  if(!sy)return;const c=sy.au.currentTime;let last=-1;
+  if(!sy)return;const c=sy.au.currentTime;let last=-1;syDots(c);
   sy.items.forEach((x,i)=>{const d=x.t!=null&&x.t<=c;const e=sy.sp[i];e.classList.toggle('done',d);e.classList.toggle('next',sy.tap&&i===sy.ni);if(d)last=i});
   const k=sy.tap?Math.max(sy.ni-1,0):Math.max(last,0),sp=sy.sp[k];
   if(sp&&k!==sy.lastK){sy.lastK=k;const b=$('#syl');b.scrollTo({top:sp.parentElement.offsetTop-b.clientHeight/3,behavior:'smooth'})}
@@ -393,6 +422,7 @@ async function publish(){
   const blob=await z.generateAsync({type:'blob',compression:'STORE'},m=>{st.textContent='Création du zip… '+Math.round(m.percent)+'%'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ilanova-publication.zip';a.click();st.textContent='Terminé. Dézippe puis glisse le dossier sur Netlify.';toast('Publication prête')}
 
+$('#tq').oninput=e=>{tf.q=e.target.value.toLowerCase().trim();rTit()};$('#ts').onchange=e=>{tf.s=e.target.value;rTit()};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go],[data-ed],[data-del],[data-pe],[data-pd]');if(!b)return;
   if(b.dataset.go)show(b.dataset.go);else if(b.dataset.ed)editTrack(b.dataset.ed);else if(b.dataset.del)delTrack(b.dataset.del);
   else if(b.dataset.pe)editPl(b.dataset.pe);else if(b.dataset.pd&&confirm('Supprimer cette playlist ?')){lib.playlists=lib.playlists.filter(p=>p.id!==b.dataset.pd);save().then(rPl)}});
