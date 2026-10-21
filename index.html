@@ -210,6 +210,66 @@ input.sk{-webkit-appearance:none;appearance:none;width:100%;height:22px;backgrou
  #full .bot button[data-m=ly]{display:none}
  #fcv{width:min(100%,42vh)}#ly::before,#ly::after{height:18vh}
 }
+/* ===== compte : Liquid Glass ===== */
+#toast{z-index:90}
+#pbtn{width:auto;min-width:40px;border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0}
+#pbtn img,#pbtn .av{width:40px;height:40px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:var(--red);color:var(--on,#000);font-weight:800;flex:none}
+#pbtn .pn{display:none;font-size:13px;font-weight:600;padding:0 14px 0 8px;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(min-width:700px){#pbtn.has .pn{display:inline}}
+@keyframes gpop{from{opacity:0;transform:translateY(26px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes gshine{0%{transform:translateX(-60%)}100%{transform:translateX(160%)}}
+#auth{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(5,5,12,.5);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overflow:hidden}
+#auth.on{display:flex;animation:fu .25s both}
+.ao{position:absolute;border-radius:50%;filter:blur(64px);opacity:.8;animation:fl 12s ease-in-out infinite;pointer-events:none}
+.ao.o1{width:280px;height:280px;background:var(--red);left:8%;top:14%}
+.ao.o2{width:320px;height:320px;background:#7a3cff;right:6%;bottom:8%;animation-delay:-4s}
+.ao.o3{width:220px;height:220px;background:#00c2ff;left:42%;top:52%;animation-delay:-8s}
+.glass{position:relative;width:100%;max-width:420px;max-height:92vh;overflow:auto;border-radius:32px;padding:26px 22px 22px;color:#fff;scrollbar-width:none;
+ background:linear-gradient(145deg,rgba(255,255,255,.27),rgba(255,255,255,.07) 55%,rgba(255,255,255,.15));
+ -webkit-backdrop-filter:blur(34px) saturate(190%) brightness(1.08);backdrop-filter:blur(34px) saturate(190%) brightness(1.08);
+ border:1px solid rgba(255,255,255,.34);
+ box-shadow:inset 0 1.5px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(255,255,255,.15),inset 0 0 44px rgba(255,255,255,.07),0 28px 80px rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.25);
+ animation:gpop .5s cubic-bezier(.2,1.2,.3,1) both}
+.glass::-webkit-scrollbar{display:none}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 55% at 18% -8%,rgba(255,255,255,.42),transparent 56%);mix-blend-mode:screen}
+.glass::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;border-radius:inherit;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.14) 50%,transparent 65%);animation:gshine 6s ease-in-out infinite;mix-blend-mode:screen}
+.glass>*{position:relative;z-index:1}
+.gx{position:absolute!important;top:14px;right:14px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.5);z-index:3}
+.gx:hover{background:rgba(255,255,255,.28)}
+.gcen{text-align:center;padding:4px 30px 14px}
+.gbrand{font-size:26px;font-weight:900;letter-spacing:5px;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.gcen h3{font-size:22px;margin:10px 0 2px}.gsub{color:rgba(255,255,255,.75);font-size:14px}
+.gav{width:88px;height:88px;border-radius:50%;object-fit:cover;margin:6px auto 4px;display:block;border:2px solid rgba(255,255,255,.55);box-shadow:0 8px 28px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.6)}
+.gav.ini{display:grid;place-items:center;font-size:36px;font-weight:800;background:var(--red);color:var(--on,#000)}
+.gseg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 2px 8px rgba(0,0,0,.2);margin-bottom:14px}
+.gseg i{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:16px;background:rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 4px 14px rgba(0,0,0,.25);transition:transform .38s cubic-bezier(.3,1.3,.5,1)}
+.gseg[data-t=up] i{transform:translateX(100%)}
+.gseg button{position:relative;padding:11px 0;font-weight:700;font-size:14px;color:rgba(255,255,255,.75);transition:color .2s}
+.gseg button.on{color:#fff}
+.gg{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:46px;border-radius:23px;background:#fff;color:#1f1f1f;border:1px solid #747775;font:500 14px/20px Roboto,"Helvetica Neue",Arial,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.28);transition:transform .15s,box-shadow .2s}
+.gg:hover{box-shadow:0 8px 26px rgba(0,0,0,.38)}.gg:disabled{opacity:.6}
+.gor{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.65);font-size:12px;margin:14px 0 2px}
+.gor::before,.gor::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent)}
+.gf{position:relative;display:block;margin-top:12px}
+.gf .gi{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.75);display:grid;pointer-events:none}
+.glass input{width:100%;padding:14px 14px 14px 44px;border-radius:18px;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);box-shadow:inset 0 2px 7px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2);font-size:15px;outline:0;transition:border-color .2s,box-shadow .2s,background .2s}
+.glass input::placeholder{color:rgba(255,255,255,.6)}
+.glass input:focus{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.75);box-shadow:inset 0 2px 7px rgba(0,0,0,.18),0 0 0 4px rgba(255,255,255,.14)}
+.gb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:16px;padding:14px;border-radius:20px;font-weight:800;font-size:15px;color:var(--on,#000);
+ background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 60%),color-mix(in srgb,var(--red) 82%,transparent);
+ border:1px solid rgba(255,255,255,.5);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),inset 0 -2px 6px rgba(0,0,0,.12),0 10px 28px rgba(0,0,0,.3);transition:transform .15s,filter .2s}
+.gb:hover{filter:brightness(1.08)}.gb:disabled{opacity:.6}
+.gb.gl{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.06));margin-top:10px}
+.gb.dng{color:#ffb4bf}
+.gl2{text-align:right;margin-top:8px}
+.glink{color:rgba(255,255,255,.85);font-size:13px;text-decoration:underline}
+.gmsg{margin:12px 0 0;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.45;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.gmsg.err{background:rgba(255,59,92,.28);border-color:rgba(255,120,140,.6)}
+.gmsg.ok{background:rgba(48,209,88,.26);border-color:rgba(120,230,150,.6)}
+.gmsg.warn{background:rgba(255,159,10,.26);border-color:rgba(255,200,120,.6)}
+.gchip{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px auto 4px;padding:9px 14px;border-radius:30px;font-size:13px;width:fit-content;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.gchip i{width:8px;height:8px;border-radius:50%;background:#9aa}.gchip.ok i{background:#30d158;box-shadow:0 0 10px #30d158}.gchip.wait i{background:#ff9f0a;animation:pu 1s infinite}.gchip.err i{background:#ff3b5c}
+.gfine{margin:16px 6px 0;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.62);text-align:center}
 </style>
 </head>
 <body class="pause">
@@ -233,6 +293,11 @@ input.sk{-webkit-appearance:none;appearance:none;width:100%;height:22px;backgrou
 <symbol id="i-back" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></symbol>
 <symbol id="i-lib2" viewBox="0 0 24 24"><line x1="5" y1="4" x2="5" y2="20"/><line x1="10" y1="4" x2="10" y2="20"/><path d="M14.5 5.5l4.5 14"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+<symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
 <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
 <symbol id="i-heartf" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z" fill="currentColor"/></symbol>
 <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
@@ -246,7 +311,7 @@ input.sk{-webkit-appearance:none;appearance:none;width:100%;height:22px;backgrou
 
 
 <div id="app">
- <header><h1 id="ttl">À l’écoute</h1><div style="display:flex;align-items:center"><span class="chip" id="prev" style="display:none">Aperçu local</span><button class="hbt" id="nbtn" data-act="news" aria-label="Actualités"><svg class="ic"><use href="#i-bell"/></svg><i class="dot"></i></button><button class="hbt" data-act="cfg" aria-label="Paramètres"><svg class="ic"><use href="#i-set"/></svg></button><div id="hlogo"></div></div></header>
+ <header><h1 id="ttl">À l’écoute</h1><div style="display:flex;align-items:center"><span class="chip" id="prev" style="display:none">Aperçu local</span><button class="hbt" id="pbtn" data-act="acct" aria-label="Compte"><svg class="ic"><use href="#i-user"/></svg></button><button class="hbt" id="nbtn" data-act="news" aria-label="Actualités"><svg class="ic"><use href="#i-bell"/></svg><i class="dot"></i></button><button class="hbt" data-act="cfg" aria-label="Paramètres"><svg class="ic"><use href="#i-set"/></svg></button><div id="hlogo"></div></div></header>
  <section class="view on" id="v-home"></section>
  <section class="view" id="v-search"><div class="sbx"><svg class="ic"><use href="#i-search"/></svg><input id="q" placeholder="Titres, artistes…" autocomplete="off"></div><div id="qr" style="margin-top:12px"></div></section>
  <section class="view" id="v-pl"></section>
@@ -275,6 +340,7 @@ input.sk{-webkit-appearance:none;appearance:none;width:100%;height:22px;backgrou
  <div class="vol"><svg class="ic"><use href="#i-v0"/></svg><input class="sk" type="range" id="vol" min="0" max="100" value="100"><svg class="ic"><use href="#i-v1"/></svg></div>
  <div class="bot"><button data-act="mode" data-m="ly"><svg class="ic"><use href="#i-msg"/></svg></button><button id="shuf" data-act="shuf"><svg class="ic"><use href="#i-shuffle"/></svg></button><button id="rep" data-act="rep" aria-label="Répéter"><svg class="ic"><use href="#i-repeat"/></svg></button><button data-act="mode" data-m="q"><svg class="ic"><use href="#i-list"/></svg></button></div>
 </div>
+<div id="auth"><i class="ao o1"></i><i class="ao o2"></i><i class="ao o3"></i><div class="glass" id="authbox"></div></div>
 <div id="modal"><div class="sheet" id="sheet"></div></div>
 <div id="toast"></div>
 
@@ -288,7 +354,7 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clea
 
 let S={tracks:[],pls:[],news:[],set:{name:'ILANOVA',tagline:'Ta musique, sans limites.',footer:'',logo:''},preview:false};
 let mine=[];try{mine=JSON.parse(localStorage.getItem('ilanova_pl')||'[]')}catch(e){}
-const saveMine=()=>{try{localStorage.setItem('ilanova_pl',JSON.stringify(mine))}catch(e){toast('Stockage plein')}};
+const saveMine=()=>{try{localStorage.setItem('ilanova_pl',JSON.stringify(mine))}catch(e){toast('Stockage plein')}scheduleSync()};
 const CFG0={theme:'dark',acc:'#1ed760',lysp:30,blur:true,anim:true,react:false,rate:1,resume:true,sort:'add'};
 let cfg={...CFG0};try{const s3=localStorage.getItem('ilanova_cfg3');cfg={...CFG0,...JSON.parse(s3||localStorage.getItem('ilanova_cfg2')||'{}')};if(!s3)cfg.react=false}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem('ilanova_cfg3',JSON.stringify(cfg))}catch(e){}};
@@ -332,7 +398,7 @@ let plays={};try{plays=JSON.parse(localStorage.getItem('ilanova_plays')||'{}')}c
 let rep=1,sleepT=0,sleepMin=0,lastSave=0;
 const isFav=id=>fav.includes(id);
 const favPl=()=>({id:'fav',name:'Titres likés',desc:'Les titres que tu aimes',ids:fav.filter(byId),hue:340,virtual:true});
-function toggleFav(id){fav=isFav(id)?fav.filter(x=>x!==id):[id,...fav];try{localStorage.setItem('ilanova_fav',JSON.stringify(fav))}catch(e){}updFav();toast(isFav(id)?'Ajouté à tes titres likés':'Retiré de tes titres likés');refresh()}
+function toggleFav(id){fav=isFav(id)?fav.filter(x=>x!==id):[id,...fav];try{localStorage.setItem('ilanova_fav',JSON.stringify(fav))}catch(e){}scheduleSync();updFav();toast(isFav(id)?'Ajouté à tes titres likés':'Retiré de tes titres likés');refresh()}
 function setSleep(m){clearTimeout(sleepT);sleepMin=m;if(!m){toast('Minuteur désactivé');return}sleepT=setTimeout(()=>{au.pause();sleepMin=0;toast('Minuteur terminé : musique en pause')},m*60000);toast('La musique s’arrêtera dans '+m+' min')}
 function ensureQ(){if(!queue.length)queue=S.tracks.map(t=>t.id)}
 function queueNext(id){ensureQ();queue=queue.filter(x=>x!==id);queue.splice(queue.indexOf(cur)+1,0,id);toast('Sera lu ensuite');if($('#full').dataset.m==='q')rQ()}
@@ -463,7 +529,7 @@ function act(a,el){
     case'mv':{const p=mine.find(x=>x.id===openId),i=p.ids.indexOf(rid),j=i+ +el.dataset.d;if(j>=0&&j<p.ids.length){[p.ids[i],p.ids[j]]=[p.ids[j],p.ids[i]];saveMine();rPd()}}break;
     case'rm':{const p=mine.find(x=>x.id===openId);p.ids=p.ids.filter(x=>x!==rid);saveMine();rPd()}break;
     case'artist':$('#q').value=el.dataset.a;$('#q').oninput({target:$('#q')});break;
-    case'news':openNews();break;case'cfg':openCfg();break;case'close':closeM();break;
+    case'acct':openAcct();break;case'news':openNews();break;case'cfg':openCfg();break;case'close':closeM();break;
     case'cs':{const k=el.dataset.k;cfg[k]=k==='rate'?+el.dataset.v:el.dataset.v;saveCfg();applyCfg();openCfg()}break;
     case'ct':{const k=el.dataset.k;cfg[k]=!cfg[k];saveCfg();applyCfg();openCfg()}break;
     case'creset':cfg={...CFG0};saveCfg();applyCfg();openCfg();break;
@@ -504,7 +570,114 @@ document.addEventListener('keydown',e=>{
   else if(k==='s'||k==='S')act('shuf',$('#shuf'));else if(k==='r'||k==='R')act('rep',$('#rep'));
   else if(k==='l'||k==='L'){if(cur){if(!fo)openFull();setMode($('#full').dataset.m==='ly'?'art':'ly')}}
   else if(k==='f'||k==='F'){if(fo)closeFull();else if(cur)openFull()}
-  else if(k==='Escape'){if($('#modal').classList.contains('on'))closeM();else closeFull()}});
+  else if(k==='Escape'){if($('#auth').classList.contains('on'))closeAuth();else if($('#modal').classList.contains('on'))closeM();else closeFull()}});
+/* ================= COMPTE UTILISATEUR : Firebase Auth + Firestore ================= */
+/* 1) Colle ici la configuration de ton application web Firebase (console Firebase > Paramètres du projet > Tes applications) */
+const FIREBASE_CONFIG={apiKey:"",authDomain:"",projectId:"",storageBucket:"",messagingSenderId:"",appId:""};
+const fbReady=()=>!!(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.projectId&&FIREBASE_CONFIG.appId);
+let FB=null,me=null,unsub=null,syncT=0,lastRev=0,syncSt='',syncAt=0,authTab='in';
+async function fbLoad(){
+  if(FB)return FB;if(!fbReady())throw new Error('config');
+  const B='https://www.gstatic.com/firebasejs/10.14.1/';
+  const [app,A,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
+  const a=app.initializeApp(FIREBASE_CONFIG);FB={app:a,auth:A.getAuth(a),db:F.getFirestore(a),A,F};return FB}
+const FBERR={'auth/invalid-email':'Adresse e-mail invalide.','auth/email-already-in-use':'Un compte existe déjà avec cette adresse e-mail.','auth/weak-password':'Mot de passe trop faible (6 caractères minimum).','auth/invalid-credential':'Adresse e-mail ou mot de passe incorrect.','auth/user-not-found':'Aucun compte avec cette adresse e-mail.','auth/wrong-password':'Mot de passe incorrect.','auth/too-many-requests':'Trop d’essais. Réessaie dans quelques minutes.','auth/popup-closed-by-user':'Fenêtre Google fermée avant la fin.','auth/cancelled-popup-request':'Connexion Google annulée.','auth/network-request-failed':'Problème de connexion internet.','auth/unauthorized-domain':'Ce site n’est pas autorisé dans Firebase (Authentication > Paramètres > Domaines autorisés).','auth/operation-not-allowed':'Cette méthode de connexion n’est pas activée dans Firebase.','auth/account-exists-with-different-credential':'Un compte existe déjà avec cette adresse e-mail via une autre méthode.','auth/user-disabled':'Ce compte a été désactivé.'};
+const fbErr=e=>FBERR[e&&e.code]||('Une erreur est survenue ('+((e&&(e.code||e.message))||'inconnue')+').');
+/* --- bouton profil dans l'en-tête --- */
+function renderProfile(){const b=$('#pbtn');if(!b)return;const u=me;
+  if(!u){b.classList.remove('has');b.innerHTML=I('user');b.title='Connexion';return}
+  const n=u.displayName||(u.email||'').split('@')[0]||'Moi';
+  b.classList.add('has');b.title=n;
+  b.innerHTML=(u.photoURL?'<img src="'+esc(u.photoURL)+'" alt="" referrerpolicy="no-referrer">':'<span class="av">'+esc(n[0].toUpperCase())+'</span>')+'<span class="pn">'+esc(n)+'</span>'}
+function initAccount(){renderProfile();if(!fbReady())return;
+  fbLoad().then(f=>{f.A.onAuthStateChanged(f.auth,u=>{me=u;renderProfile();if(u){closeAuth(true);cloudStart(u)}else cloudStop()});
+    f.A.getRedirectResult(f.auth).catch(e=>toast(fbErr(e)))}).catch(()=>toast('Impossible de charger Firebase'))}
+/* --- sauvegarde des playlists et favoris sur le compte --- */
+const uref=()=>FB.F.doc(FB.db,'users',me.uid);
+const linked=()=>{try{return me&&localStorage.getItem('ilanova_link')===me.uid}catch(e){return false}};
+function persistLocal(){try{localStorage.setItem('ilanova_pl',JSON.stringify(mine));localStorage.setItem('ilanova_fav',JSON.stringify(fav))}catch(e){}}
+function payload(){let m=mine;if(JSON.stringify(m).length>800000){m=mine.map(p=>({...p,cover:''}));toast('Playlists lourdes : les photos ne sont pas envoyées sur le compte')}
+  return{mine:m,fav,rev:Date.now(),name:(me&&me.displayName)||'',updatedAt:FB.F.serverTimestamp()}}
+async function pushNow(){if(!me||!FB)return;clearTimeout(syncT);const p=payload();lastRev=p.rev;await FB.F.setDoc(uref(),p,{merge:true});setSync('ok')}
+function scheduleSync(){if(!me||!FB||!linked())return;clearTimeout(syncT);setSync('wait');syncT=setTimeout(()=>pushNow().catch(()=>setSync('err')),1200)}
+function applyCloud(d){mine=Array.isArray(d.mine)?d.mine:[];fav=Array.isArray(d.fav)?d.fav:[];persistLocal();refresh();if($('#v-home').classList.contains('on'))rHome();updFav();setSync('ok')}
+async function cloudStart(u){setSync('wait');
+  try{
+    if(localStorage.getItem('ilanova_link')!==u.uid){
+      const snap=await FB.F.getDoc(uref());
+      if(snap.exists()){const d=snap.data(),ids=new Set((d.mine||[]).map(p=>p.id));
+        mine=[...(d.mine||[]),...mine.filter(p=>!ids.has(p.id))];fav=[...new Set([...(d.fav||[]),...fav])];persistLocal();
+        refresh();if($('#v-home').classList.contains('on'))rHome();updFav()}
+      localStorage.setItem('ilanova_link',u.uid);await pushNow()}
+    if(unsub)unsub();
+    unsub=FB.F.onSnapshot(uref(),snap=>{if(!snap.exists()||snap.metadata.hasPendingWrites)return;const d=snap.data();if(d.rev&&d.rev===lastRev)return;lastRev=d.rev||0;applyCloud(d)},()=>setSync('err'));
+    setSync('ok')
+  }catch(e){setSync('err');toast('Sauvegarde impossible : vérifie les règles Firestore')}}
+function cloudStop(){if(unsub){unsub();unsub=null}clearTimeout(syncT);setSync('')}
+function syncText(){const t=syncAt?new Date(syncAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'';
+  return syncSt==='ok'?'Sauvegarde automatique activée'+(t?' · '+t:''):syncSt==='wait'?'Synchronisation…':syncSt==='err'?'Sauvegarde impossible':'Prêt'}
+function setSync(st){syncSt=st;if(st==='ok')syncAt=Date.now();const el=$('#g-st');if(el){el.textContent=syncText();const c=el.closest('.gchip');if(c)c.className='gchip '+syncSt}}
+async function logout(){if(!me)return;
+  try{await pushNow()}catch(e){if(!confirm('La dernière sauvegarde a échoué. Te déconnecter quand même et effacer la copie de cet appareil ?'))return}
+  cloudStop();try{await FB.A.signOut(FB.auth)}catch(e){}
+  me=null;mine=[];fav=[];try{localStorage.removeItem('ilanova_pl');localStorage.removeItem('ilanova_fav');localStorage.removeItem('ilanova_link')}catch(e){}
+  closeAuth();renderProfile();refresh();if($('#v-home').classList.contains('on'))rHome();updFav();toast('Déconnecté · tes données restent sur ton compte')}
+/* --- fenêtre Liquid Glass --- */
+const GLOGO='<svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+const auField=(id,type,ph,ic,ac)=>'<label class="gf"><span class="gi">'+I(ic)+'</span><input id="'+id+'" type="'+type+'" placeholder="'+ph+'" autocomplete="'+ac+'"></label>';
+function openAuth(tab){authTab=tab||'in';renderAuth();$('#auth').classList.add('on')}
+function openAcct(){authTab=(fbReady()&&me)?'acct':'in';renderAuth();$('#auth').classList.add('on')}
+function closeAuth(soft){if(soft&&authTab==='acct')return;$('#auth').classList.remove('on')}
+$('#auth').addEventListener('click',e=>{if(e.target.id==='auth')closeAuth()});
+function renderAuth(){const b=$('#authbox');let h='';
+  if(authTab==='acct'&&me){const n=me.displayName||(me.email||'').split('@')[0]||'Moi';
+    h='<button class="gx" id="g-x" aria-label="Fermer">'+I('x')+'</button><div class="gcen">'+(me.photoURL?'<img class="gav" src="'+esc(me.photoURL)+'" alt="" referrerpolicy="no-referrer">':'<div class="gav ini">'+esc(n[0].toUpperCase())+'</div>')+'<h3>'+esc(n)+'</h3><div class="gsub">'+esc(me.email||'')+'</div></div>'
+     +'<div class="gchip '+syncSt+'"><i></i>'+I('cloud')+'<span id="g-st">'+syncText()+'</span></div>'
+     +'<div id="g-msg" class="gmsg" style="display:none"></div>'
+     +'<button class="gb" id="g-sync" type="button">Synchroniser maintenant</button><button class="gb gl" id="g-name" type="button">Modifier mon pseudo</button><button class="gb gl dng" id="g-out" type="button">'+I('out')+' Se déconnecter</button>'
+     +'<p class="gfine">Tes playlists et tes titres likés sont sauvegardés sur ton compte et retrouvés sur tous tes appareils.</p>'}
+  else{authTab=authTab==='up'?'up':'in';
+    h='<button class="gx" id="g-x" aria-label="Fermer">'+I('x')+'</button><div class="gcen"><div class="gbrand">ILANOVA</div><div class="gsub">'+(authTab==='in'?'Content de te revoir':'Crée ton compte gratuit')+'</div></div>'
+     +'<div class="gseg" data-t="'+authTab+'"><i></i><button type="button" data-t="in" class="'+(authTab==='in'?'on':'')+'">Connexion</button><button type="button" data-t="up" class="'+(authTab==='up'?'on':'')+'">Inscription</button></div>'
+     +(fbReady()?'':'<div class="gmsg warn">Les comptes ne sont pas encore activés : colle ta configuration Firebase dans <b>FIREBASE_CONFIG</b> au début du script de index.html.</div>')
+     +'<div id="g-msg" class="gmsg" style="display:none"></div>'
+     +'<button class="gg" id="g-go" type="button" style="margin-top:12px">'+GLOGO+'<span>Se connecter avec Google</span></button><div class="gor"><span>ou</span></div>'
+     +(authTab==='in'
+       ?'<form id="f-in" novalidate>'+auField('au-em','email','Adresse e-mail','mail','username')+auField('au-pw','password','Mot de passe','lock','current-password')+'<div class="gl2"><button type="button" id="g-forgot" class="glink">Mot de passe oublié ?</button></div><button class="gb" type="submit" id="g-sub">Se connecter</button></form>'
+       :'<form id="f-up" novalidate>'+auField('au-nm','text','Nom / Pseudo','user','nickname')+auField('au-em','email','Adresse e-mail','mail','email')+auField('au-pw','password','Mot de passe (6 caractères minimum)','lock','new-password')+'<button class="gb" type="submit" id="g-sub">Créer mon compte</button></form>')
+     +'<p class="gfine">Connecte-toi pour retrouver tes playlists et tes favoris sur tous tes appareils.</p>'}
+  b.innerHTML=h;wireAuth()}
+function auMsg(t,k){const el=$('#g-msg');if(!el)return;el.textContent=t;el.className='gmsg '+(k||'');el.style.display='block'}
+function auBusy(v){['g-sub','g-go','g-sync'].forEach(id=>{const el=$('#'+id);if(el)el.disabled=v})}
+function wireAuth(){const b=$('#authbox'),g=id=>b.querySelector('#'+id);
+  g('g-x').onclick=()=>closeAuth();
+  b.querySelectorAll('.gseg button').forEach(x=>{x.onclick=()=>{authTab=x.dataset.t;renderAuth()}});
+  if(authTab==='acct'){
+    g('g-sync').onclick=async()=>{auBusy(true);try{await pushNow();auMsg('Synchronisé.','ok')}catch(e){setSync('err');auMsg('Synchronisation impossible : vérifie les règles Firestore.','err')}auBusy(false)};
+    g('g-name').onclick=async()=>{const n=(prompt('Ton nouveau pseudo ?',me.displayName||'')||'').trim();if(n.length<2||n.length>30){if(n)auMsg('Le pseudo doit faire entre 2 et 30 caractères.','err');return}
+      try{await FB.A.updateProfile(me,{displayName:n});renderProfile();renderAuth();toast('Pseudo mis à jour')}catch(e){auMsg(fbErr(e),'err')}};
+    g('g-out').onclick=logout;return}
+  g('g-go').onclick=doGoogle;
+  const fi=g('f-in'),fu=g('f-up');
+  if(fi){fi.onsubmit=e=>{e.preventDefault();doLogin()};g('g-forgot').onclick=doReset}
+  if(fu)fu.onsubmit=e=>{e.preventDefault();doSignup()}}
+const auCheck=()=>{if(!fbReady()){auMsg('Firebase n’est pas encore configuré dans index.html.','warn');return false}return true};
+async function doLogin(){if(!auCheck())return;const em=$('#au-em').value.trim(),pw=$('#au-pw').value;
+  if(!em||!pw){auMsg('Entre ton adresse e-mail et ton mot de passe.','err');return}
+  auBusy(true);try{const f=await fbLoad();await f.A.signInWithEmailAndPassword(f.auth,em,pw);toast('Connecté')}catch(e){auMsg(fbErr(e),'err')}auBusy(false)}
+async function doSignup(){if(!auCheck())return;const n=$('#au-nm').value.trim(),em=$('#au-em').value.trim(),pw=$('#au-pw').value;
+  if(n.length<2||n.length>30){auMsg('Ton pseudo doit faire entre 2 et 30 caractères.','err');return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){auMsg('Adresse e-mail invalide.','err');return}
+  if(pw.length<6){auMsg('Mot de passe trop court (6 caractères minimum).','err');return}
+  auBusy(true);try{const f=await fbLoad();const c=await f.A.createUserWithEmailAndPassword(f.auth,em,pw);await f.A.updateProfile(c.user,{displayName:n});me=f.auth.currentUser;renderProfile();toast('Bienvenue '+n+' !')}catch(e){auMsg(fbErr(e),'err')}auBusy(false)}
+async function doGoogle(){if(!auCheck())return;auBusy(true);
+  try{const f=await fbLoad(),p=new f.A.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
+    try{await f.A.signInWithPopup(f.auth,p)}catch(e){if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment','auth/web-storage-unsupported'].includes(e.code)){await f.A.signInWithRedirect(f.auth,p);return}throw e}
+  }catch(e){auMsg(fbErr(e),'err')}auBusy(false)}
+async function doReset(){if(!auCheck())return;const em=$('#au-em').value.trim();
+  if(!em){auMsg('Entre d’abord ton adresse e-mail ci-dessus.','err');return}
+  try{const f=await fbLoad();await f.A.sendPasswordResetEmail(f.auth,em);auMsg('E-mail de réinitialisation envoyé. Pense à regarder tes spams.','ok')}catch(e){auMsg(fbErr(e),'err')}}
+
 const au=new Audio();au.preload='metadata';
 let cur=null,queue=[],shuf=false,lines=[],li=-1,drag=false;
 function parseLRC(s){const o=[];(s||'').split('\n').forEach(l=>{const tags=[...l.matchAll(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g)];if(!tags.length)return;let raw=l.replace(/\[[^\]]*\]/g,'').trim();let right=false;{const mk=raw.match(/^((?:<\d+:\d+(?:[.:]\d+)?>)?)\s*>\s*/);if(mk){right=true;raw=mk[1]+raw.slice(mk[0].length)}}
@@ -657,7 +830,7 @@ au.onseeked=lyTick;
   if(S.preview)$('#prev').style.display='';
   rnd=shuffleArr(S.tracks.map(t=>t.id));
   $('#ttl').textContent=greet();$('#q').oninput({target:$('#q')});
-  rHome();updRep();applyLys();
+  rHome();updRep();applyLys();initAccount();
   const dm=location.hash.match(/#t=([\w-]+)/);
   if(dm&&byId(dm[1])){play(dm[1],null,0);toast('Appuie sur lecture pour écouter')}
   else if(cfg.resume){try{const L=JSON.parse(localStorage.getItem('ilanova_last')||'null');if(L&&byId(L.id))play(L.id,null,L.pos||0)}catch(e){}}
