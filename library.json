@@ -253,15 +253,48 @@
    "audio": "musiques/mz-toi-sur-moi-clip-officiel-h2vn.mp3",
    "cover": "covers/mz-toi-sur-moi-clip-officiel-h2vn.jpg",
    "lrc": "paroles/mz-toi-sur-moi-clip-officiel-h2vn.lrc"
+  },
+  {
+   "id": "spotidownloader-com-california-udo4",
+   "title": "California",
+   "artist": "Queen House",
+   "audio": "musiques/spotidownloader-com-california-udo4.mp3",
+   "cover": "covers/spotidownloader-com-california-udo4.jpg",
+   "lrc": "paroles/spotidownloader-com-california-udo4.lrc"
+  },
+  {
+   "id": "rambo-goyard-b-m-s-by-my-side--z2hn",
+   "title": "B.M.S (by my side)",
+   "artist": "Rambo goyard",
+   "audio": "musiques/rambo-goyard-b-m-s-by-my-side--z2hn.mp3",
+   "cover": "covers/rambo-goyard-b-m-s-by-my-side--z2hn.jpg",
+   "lrc": "paroles/rambo-goyard-b-m-s-by-my-side--z2hn.lrc"
+  },
+  {
+   "id": "rnboi-nono-la-grinta-avec-moi--tu8y",
+   "title": "AVEC MOI",
+   "artist": "RnBoi, Nono La Grinta",
+   "audio": "musiques/rnboi-nono-la-grinta-avec-moi--tu8y.mp3",
+   "cover": "covers/rnboi-nono-la-grinta-avec-moi--tu8y.jpg",
+   "lrc": "paroles/rnboi-nono-la-grinta-avec-moi--tu8y.lrc"
+  },
+  {
+   "id": "rnboi-elle-voulait-clip-offici-49n9",
+   "title": "ELLE VOULAIT",
+   "artist": "RnBoi",
+   "audio": "musiques/rnboi-elle-voulait-clip-offici-49n9.mp3",
+   "cover": "covers/rnboi-elle-voulait-clip-offici-49n9.jpg",
+   "lrc": "paroles/rnboi-elle-voulait-clip-offici-49n9.lrc"
+  },
+  {
+   "id": "rnboi-mon-bebe-clip-officiel-k4yt",
+   "title": "MON BÉBÉ",
+   "artist": "RnBoi",
+   "audio": "musiques/rnboi-mon-bebe-clip-officiel-k4yt.mp3",
+   "cover": "covers/rnboi-mon-bebe-clip-officiel-k4yt.jpg",
+   "lrc": "paroles/rnboi-mon-bebe-clip-officiel-k4yt.lrc"
   }
  ],
  "playlists": [],
- "news": [
-  {
-   "id": "nmvf8o29e",
-   "date": "2026-10-19T12:36:54.770Z",
-   "title": "Correction bug des son",
-   "text": "hier un problème avait eu que quand on lançai un son sa ne marcher pas ni les parole le bug et maintenant résolue\n\nDes amélioration arrive très bientôt."
-  }
- ]
+ "news": []
 }
