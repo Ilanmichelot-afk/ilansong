@@ -573,7 +573,7 @@ document.addEventListener('keydown',e=>{
   else if(k==='Escape'){if($('#auth').classList.contains('on'))closeAuth();else if($('#modal').classList.contains('on'))closeM();else closeFull()}});
 /* ================= COMPTE UTILISATEUR : Firebase Auth + Firestore ================= */
 /* 1) Colle ici la configuration de ton application web Firebase (console Firebase > Paramètres du projet > Tes applications) */
-const FIREBASE_CONFIG={apiKey:"",authDomain:"",projectId:"",storageBucket:"",messagingSenderId:"",appId:""};
+const FIREBASE_CONFIG={apiKey:"AIzaSyB16yhg1WoXUuAJf89aLTB5Fn7WfRED_WM",authDomain:"connection-5359a.firebaseapp.com",projectId:"connection-5359a",storageBucket:"connection-5359a.firebasestorage.app",messagingSenderId:"205320163950",appId:"1:205320163950:web:61f79fbe1c904756260c7f"};
 const fbReady=()=>!!(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.projectId&&FIREBASE_CONFIG.appId);
 let FB=null,me=null,unsub=null,syncT=0,lastRev=0,syncSt='',syncAt=0,authTab='in';
 async function fbLoad(){
