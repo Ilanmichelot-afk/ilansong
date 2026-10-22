@@ -270,6 +270,49 @@ input.sk{-webkit-appearance:none;appearance:none;width:100%;height:22px;backgrou
 .gchip{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px auto 4px;padding:9px 14px;border-radius:30px;font-size:13px;width:fit-content;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
 .gchip i{width:8px;height:8px;border-radius:50%;background:#9aa}.gchip.ok i{background:#30d158;box-shadow:0 0 10px #30d158}.gchip.wait i{background:#ff9f0a;animation:pu 1s infinite}.gchip.err i{background:#ff3b5c}
 .gfine{margin:16px 6px 0;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.62);text-align:center}
+
+/* --- REGLES DYNAMIQUES LIQUID GLASS --- */
+:root {
+  --glass-blur: 20px;
+  --glass-opacity: 0.18;
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* Application du verre translucide */
+#mini, #tabs, .card, .sheet, .st, .box, .seg, input, textarea, select {
+  background: rgba(255, 255, 255, var(--glass-opacity)) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* --- THEMES STYLES --- */
+/* Thème Kawaii / Gaming Néon */
+[data-theme="kawaii"] {
+  --bg: #0d021a;
+  --fg: #ff79c6;
+  --card: #19092b;
+  --mut: #bd93f9;
+  --red: #ff2d95;
+  --pc: #bd93f9;
+  --line: rgba(255, 121, 198, 0.25);
+  --bar: rgba(25, 9, 43, 0.85);
+  --sheet: #19092b;
+}
+
+/* Thème OLED Noir Pur */
+[data-theme="oled"] {
+  --bg: #000000;
+  --fg: #ffffff;
+  --card: #121212;
+  --mut: #888888;
+  --red: #1ed760;
+  --pc: #333333;
+  --line: #222222;
+  --bar: #000000;
+  --sheet: #121212;
+}
 </style>
 </head>
 <body class="pause">
@@ -355,13 +398,25 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clea
 let S={tracks:[],pls:[],news:[],set:{name:'ILANOVA',tagline:'Ta musique, sans limites.',footer:'',logo:''},preview:false};
 let mine=[];try{mine=JSON.parse(localStorage.getItem('ilanova_pl')||'[]')}catch(e){}
 const saveMine=()=>{try{localStorage.setItem('ilanova_pl',JSON.stringify(mine))}catch(e){toast('Stockage plein')}scheduleSync()};
-const CFG0={theme:'dark',acc:'#1ed760',lysp:30,blur:true,anim:true,react:false,rate:1,resume:true,sort:'add'};
+const CFG0={theme:'dark',acc:'#1ed760',lys:28,glassBlur:20,blur:true,anim:true,react:false,rate:1,resume:true,sort:'add'};
 let cfg={...CFG0};try{const s3=localStorage.getItem('ilanova_cfg3');cfg={...CFG0,...JSON.parse(s3||localStorage.getItem('ilanova_cfg2')||'{}')};if(!s3)cfg.react=false}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem('ilanova_cfg3',JSON.stringify(cfg))}catch(e){}};
 let lyMaxWord=8;
-function applyCfg(){const r=document.documentElement;if(cfg.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',cfg.theme);
-  r.style.setProperty('--red',cfg.acc);{const h=cfg.acc.replace('#','');const L=(parseInt(h.slice(0,2),16)*.299+parseInt(h.slice(2,4),16)*.587+parseInt(h.slice(4,6),16)*.114)/255;r.style.setProperty('--on',L>.5?'#000':'#fff')}applyLys();try{au.defaultPlaybackRate=cfg.rate;au.playbackRate=cfg.rate}catch(e){}r.classList.toggle('noblur',!cfg.blur);r.classList.toggle('noanim',!cfg.anim);
-  const dk=cfg.theme==='dark'||(cfg.theme==='auto'&&matchMedia('(prefers-color-scheme:dark)').matches);const m=document.querySelector('meta[name=theme-color]');if(m)m.content=dk?'#000000':'#ffffff'}
+function applyCfg(){
+  const r=document.documentElement;
+  if(cfg.theme==='auto') r.removeAttribute('data-theme');
+  else r.setAttribute('data-theme', cfg.theme);
+
+  // Application de la valeur du slider Liquid Glass
+  const blurVal = cfg.glassBlur ?? 20;
+  r.style.setProperty('--glass-blur', blurVal + 'px');
+  r.style.setProperty('--glass-opacity', (blurVal / 120).toFixed(2));
+
+  r.style.setProperty('--red', cfg.acc);
+  r.style.setProperty('--lys', (cfg.lys || 28) + 'px');
+  r.classList.toggle('noblur', !cfg.blur);
+  r.classList.toggle('noanim', !cfg.anim);
+}
 applyCfg();
 function idbGet(k){return new Promise(res=>{try{const r=indexedDB.open('ilanova',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onerror=()=>res();r.onsuccess=()=>{const q=r.result.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res()}}catch(e){res()}})}
 async function load(){
@@ -490,16 +545,42 @@ const ACCS=['#1ed760','#ff2d95','#7a3cff','#0a84ff','#ff9f0a','#fa2d48'];
 function openCfg(){
   const seg=(k,o)=>`<div class="seg">${o.map(x=>`<button data-act="cs" data-k="${k}" data-v="${x[0]}" class="${String(cfg[k])===String(x[0])?'on':''}">${x[1]}</button>`).join('')}</div>`;
   const tg=(k,l,d)=>`<div class="srow"><div><div class="t">${l}</div><div class="s" style="white-space:normal">${d}</div></div><button class="tg ${cfg[k]?'on':''}" data-act="ct" data-k="${k}" aria-label="${l}"></button></div>`;
-  modal(`<h3>Paramètres</h3><label>Thème</label>${seg('theme',[['auto','Auto'],['light','Clair'],['dark','Sombre']])}
-  <label>Couleur</label><div class="sw">${ACCS.map(c=>`<i data-act="cs" data-k="acc" data-v="${c}" class="${cfg.acc===c?'on':''}" style="background:${c}"></i>`).join('')}</div>
-  <label>Taille des paroles : <b id="lys-v">${lysSize()}</b> px · le bout de la barre = le maximum qui tient à l’écran</label><input type="range" id="cfg-lys" min="0" max="100" value="${cfg.lysp}" style="width:100%;accent-color:var(--red)">
-  <div style="margin-top:8px">${tg('blur','Flou des paroles','Floute les lignes qui ne sont pas en cours.')}${tg('anim','Animations','Coupe-les si ton téléphone rame.')}${tg('react','Fond qui réagit au son','Option : le fond gonfle et vibre avec les basses. Désactivé par défaut.')}</div>
-  <label>Vitesse de lecture</label>${seg('rate',[[0.75,'0,75×'],[1,'1×'],[1.25,'1,25×'],[1.5,'1,5×']])}
-  <label>Minuteur de sommeil</label><div class="seg">${[[0,'Off'],[15,'15 min'],[30,'30 min'],[60,'1 h']].map(x=>`<button data-act="sleep" data-v="${x[0]}" class="${sleepMin===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
-  <div style="margin-top:8px">${tg('resume','Reprendre où j’en étais','Retrouve ton dernier titre et sa position à ton retour.')}</div>
-  <div style="margin-top:12px"><button class="btn alt" data-act="clrh">Effacer mon historique d’écoute</button></div>
-  <p class="s" style="margin-top:12px;line-height:1.6;white-space:normal">Raccourcis clavier (PC) : Espace lecture · ← → ±5 s · N / P titre suivant / précédent · M muet · S aléatoire · R répéter · L paroles · F plein écran · Échap fermer</p>
-  <div class="acts"><button class="btn alt" data-act="creset">Réinitialiser</button><button class="btn red" data-act="close">OK</button></div>`);wireCfg()}
+  
+  modal(`<h3>Paramètres</h3>
+  <label>Thème visuel</label>
+  ${seg('theme',[['auto','Auto'],['dark','Sombre'],['kawaii','Kawaii Gaming'],['oled','OLED Noir']])}
+  
+  <label>Intensité Liquid Glass (Flou & Verre)</label>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <input type="range" id="glass-range" min="0" max="40" value="${cfg.glassBlur ?? 20}" style="flex:1">
+    <span id="glass-val" style="font-weight:bold;min-width:35px">${cfg.glassBlur ?? 20}px</span>
+  </div>
+
+  <label>Couleur d'accentuation</label>
+  <div class="sw">${ACCS.map(c=>`<i data-act="cs" data-k="acc" data-v="${c}" class="${cfg.acc===c?'on':''}" style="background:${c}"></i>`).join('')}</div>
+
+  <label>Taille des paroles</label>
+  ${seg('lys',[[22,'Petite'],[28,'Normale'],[34,'Grande']])}
+
+  <div style="margin-top:8px">
+    ${tg('blur','Flou des paroles','Floute les lignes qui ne sont pas en cours.')}
+    ${tg('anim','Animations','Coupe-les si ton téléphone rame.')}
+  </div>
+
+  <div class="acts"><button class="btn alt" data-act="creset">Réinitialiser</button><button class="btn red" data-act="close">OK</button></div>`);
+
+  const range = $('#glass-range'), txt = $('#glass-val');
+  if(range){
+    range.oninput = e => {
+      const v = +e.target.value;
+      txt.textContent = v + 'px';
+      document.documentElement.style.setProperty('--glass-blur', v + 'px');
+      document.documentElement.style.setProperty('--glass-opacity', (v / 120).toFixed(2));
+      cfg.glassBlur = v;
+      saveCfg();
+    };
+  }
+}
 function wireCfg(){const r=$('#cfg-lys');if(r)r.oninput=e=>{cfg.lysp=+e.target.value;saveCfg();applyLys();const v=$('#lys-v');if(v)v.textContent=lysSize()}}
 function setMode(m){const f=$('#full');f.dataset.m=m;$$('.bot button[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(m==='q')rQ();setTimeout(applyLys,30)}
 function rQ(){CTX.qq=queue;$('#ql').innerHTML=queue.map((id,i)=>byId(id)?row(byId(id),'qq',i):'').join('');mark()}
@@ -573,7 +654,7 @@ document.addEventListener('keydown',e=>{
   else if(k==='Escape'){if($('#auth').classList.contains('on'))closeAuth();else if($('#modal').classList.contains('on'))closeM();else closeFull()}});
 /* ================= COMPTE UTILISATEUR : Firebase Auth + Firestore ================= */
 /* 1) Colle ici la configuration de ton application web Firebase (console Firebase > Paramètres du projet > Tes applications) */
-const FIREBASE_CONFIG={apiKey:"AIzaSyB16yhg1WoXUuAJf89aLTB5Fn7WfRED_WM",authDomain:"connection-5359a.firebaseapp.com",projectId:"connection-5359a",storageBucket:"connection-5359a.firebasestorage.app",messagingSenderId:"205320163950",appId:"1:205320163950:web:61f79fbe1c904756260c7f"};
+const FIREBASE_CONFIG={apiKey:"",authDomain:"",projectId:"",storageBucket:"",messagingSenderId:"",appId:""};
 const fbReady=()=>!!(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.projectId&&FIREBASE_CONFIG.appId);
 let FB=null,me=null,unsub=null,syncT=0,lastRev=0,syncSt='',syncAt=0,authTab='in';
 async function fbLoad(){
